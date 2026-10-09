@@ -160,3 +160,4 @@ Requisitos básicos, variáveis de ambiente e comandos de execução de cada mó
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Responsabilidades dos módulos, fluxos de comunicação e decisões arquiteturais. |
 | [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) | Pré-requisitos, configuração local, variáveis, execução, testes e solução de problemas. |
 | [`contracts/`](contracts/) | Contratos de interface entre módulos (OpenAPI, JSON Schema). |
+| [`CLAUDE.md`](CLAUDE.md) | Índice e regras para o desenvolvimento assistido por IA (Claude Code). |
