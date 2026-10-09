@@ -99,6 +99,10 @@ git branch -d feat/backend-12-login   # use -D somente após confirmar que o PR 
 
 O documento de referência completo está em [`docs/PROJETO_HORIZONTE_DOCUMENTO_INSTITUCIONAL.pdf`](docs/PROJETO_HORIZONTE_DOCUMENTO_INSTITUCIONAL.pdf).
 
+## 7. Desenvolvimento assistido por IA
+
+Ao usar o Claude Code (ou outro assistente), as mesmas regras valem: Issue, branch, PR revisado e nenhum segredo no Git. O [`CLAUDE.md`](CLAUDE.md) orienta o agente sobre quais documentos ler e atualizar; mantenha-o atualizado quando criar documentos ou seções novas. O código gerado por IA é responsabilidade de quem abre o PR e deve ser revisado e testado como qualquer outro.
+
 ## Resumo
 
 `Issue → branch → implementação → testes locais → commit/push → Pull Request → revisão → Squash and Merge → Issue concluída`
