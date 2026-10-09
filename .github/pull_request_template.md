@@ -1,0 +1,42 @@
+## Descrição
+
+<!-- O que foi desenvolvido e por quê. -->
+
+Closes #<!-- número da Issue -->
+
+## Módulos afetados
+
+- [ ] `backend/`
+- [ ] `frontend/`
+- [ ] `ai/`
+- [ ] `contracts/` (exige alinhamento com as equipes afetadas)
+- [ ] `docs/`
+- [ ] `infra/`
+
+## Como testar
+
+<!-- Passos para o revisor reproduzir e verificar a mudança. -->
+
+1.
+2.
+
+## Resultado dos testes locais
+
+<!-- O projeto não usa CI: cole aqui os comandos executados e sua saída/evidência. -->
+
+```text
+
+```
+
+## Checklist
+
+- [ ] A branch foi criada a partir da `main` atualizada e segue `tipo/area-numero-descricao`.
+- [ ] O PR trata de **uma única** Issue/funcionalidade.
+- [ ] Executei a aplicação/módulo e os testes disponíveis localmente.
+- [ ] Revisei `git status` e `git diff`; não há credenciais, `.env` reais ou arquivos gerados.
+- [ ] Atualizei contratos e documentação, quando necessário.
+- [ ] Solicitei revisão a outro membro autorizado ou ao responsável técnico.
+
+## Observações
+
+<!-- Pendências, decisões, limitações ou dependências de outras equipes. -->
