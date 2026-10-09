@@ -41,7 +41,9 @@ Fonte de verdade em caso de conflito: Issue > `CONTRIBUTING.md` / `docs/` > este
 6. **PR**: `git push -u origin <branch>` e depois `gh pr create --base main --body-file <arquivo>`, seguindo `.github/pull_request_template.md` e incluindo `Closes #N`.
 7. **Merge** (humano, Squash and Merge), seguido de `git switch main && git pull && git fetch --prune && git branch -D <branch>`.
 
-GitHub Project (`gh project`, requer permissão `project` no login do `gh`): ao começar, mova a Issue para *In progress*. O fechamento pelo merge move a Issue para *Done*.
+GitHub Project `unisenac-pesquisa-26-27` (`gh project ... 1 --owner chiarorosa`, requer permissão `project` no `gh`):
+- Issues novas entram sozinhas como *Backlog* (Auto-add, ao criar ou editar). Se não estiver lá: `gh project item-add 1 --owner chiarorosa --url <issue>`.
+- Status: *In progress* ao começar e *In review* ao abrir o PR (confira depois, porque os workflows do Project podem alterá-lo). O merge move para *Done*.
 
 ## Matriz de atualização: se alterar X, atualize Y no mesmo PR
 
