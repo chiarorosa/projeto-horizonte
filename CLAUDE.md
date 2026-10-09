@@ -26,6 +26,8 @@ Projeto: plataforma agêntica gamificada com RAG para capacitação corporativa.
 | Erro de git, SSH ou ambiente | `docs/DEVELOPMENT.md` §5 |
 | Trabalhar dentro de um módulo | `<módulo>/README.md` |
 | Integração entre módulos (API, schemas, erros) | `contracts/README.md` e os arquivos em `contracts/` |
+| Objetivo, escopo, perfis e princípios (LGPD, validação humana, fontes) | `README.md` "Sobre o Horizonte" |
+| Telas e fluxos de interface | Figma (link em `README.md` §6) |
 | Visão geral, onboarding | `README.md` §1 e §5 |
 | Material de apoio do colaborador | `context/` (local, não versionado; ver abaixo) |
 
