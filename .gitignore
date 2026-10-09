@@ -118,3 +118,8 @@ infra/volumes/
 # ---------- Claude Code (configurações pessoais) ----------
 CLAUDE.local.md
 .claude/settings.local.json
+
+# ---------- Contexto local para assistentes de IA ----------
+# Documentos de apoio de cada colaborador; nunca versionar.
+# Para incluir um documento no projeto: Issue -> copiar para docs/ etc. -> PR.
+context/

@@ -103,6 +103,8 @@ O documento de referência completo está em [`docs/PROJETO_HORIZONTE_DOCUMENTO_
 
 Ao usar o Claude Code (ou outro assistente), as mesmas regras valem: Issue, branch, PR revisado e nenhum segredo no Git. O [`CLAUDE.md`](CLAUDE.md) orienta o agente sobre quais documentos ler e atualizar; mantenha-o atualizado quando criar documentos ou seções novas. O código gerado por IA é responsabilidade de quem abre o PR e deve ser revisado e testado como qualquer outro.
 
+**Pasta `context/` (local):** cada colaborador pode criar uma pasta `context/` na raiz e colocar ali documentos de apoio (PDFs, anotações, especificações) para o assistente ler durante uma tarefa. Ela está no `.gitignore` e nunca é versionada. Se um documento precisar fazer parte do projeto, abra uma Issue e inclua o arquivo no local adequado (`docs/`, `contracts/` ou módulo) via PR. Evite colocar dados pessoais ou confidenciais sem necessidade.
+
 ## Resumo
 
 `Issue → branch → implementação → testes locais → commit/push → Pull Request → revisão → Squash and Merge → Issue concluída`
