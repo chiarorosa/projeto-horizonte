@@ -27,6 +27,7 @@ Projeto: plataforma agêntica gamificada com RAG para capacitação corporativa.
 | Trabalhar dentro de um módulo | `<módulo>/README.md` |
 | Integração entre módulos (API, schemas, erros) | `contracts/README.md` e os arquivos em `contracts/` |
 | Visão geral, onboarding | `README.md` §1 e §5 |
+| Material de apoio do colaborador | `context/` (local, não versionado; ver abaixo) |
 
 Fonte de verdade em caso de conflito: Issue > `CONTRIBUTING.md` / `docs/` > este arquivo. Ao encontrar um conflito, aponte-o ao usuário.
 
@@ -54,6 +55,14 @@ GitHub Project (`gh project`, requer permissão `project` no login do `gh`): ao 
 | Responsabilidade ou estrutura de um módulo | `<módulo>/README.md` e `docs/ARCHITECTURE.md` §2 |
 | Fluxo de colaboração (branches, PR, revisão) | `CONTRIBUTING.md` (e `README.md` se for o resumo) |
 | Novo documento ou seção importante | o índice desta página |
+
+## Pasta `context/` (local)
+
+- Contém documentos que o colaborador colocou para dar contexto à tarefa. Pode não existir; não é versionada.
+- Consulte quando a tarefa ou o usuário mencionar o documento, ou quando a Issue não bastar. Leia só o necessário.
+- É material de apoio: a Issue e os documentos versionados prevalecem. Aponte divergências ao usuário.
+- Se um documento precisar entrar no projeto, proponha uma Issue e copie o arquivo para o destino correto (`docs/`, `contracts/` ou o módulo) via branch e PR. Nunca remova `context/` do `.gitignore`.
+- Não copie trechos sensíveis de `context/` para código, commits, Issues ou PRs.
 
 ## Manutenção deste arquivo
 
