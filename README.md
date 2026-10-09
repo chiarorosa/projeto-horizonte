@@ -4,6 +4,33 @@
 >
 > **Regra principal:** cada tarefa deve ter sua própria Issue e branch. Nenhum aluno deve enviar alterações diretamente para `main`: toda integração deve ocorrer por **Pull Request (PR)**, após revisão.
 
+## Sobre o Horizonte
+
+**Plataforma Inteligente para Capacitação Contínua assistida por IA Generativa e Gamificação**, projeto de pesquisa aplicada do UniSenac-RS (linha Transformação Digital e Segurança da Informação), com vigência de julho/2026 a junho/2027.
+
+**Objetivo:** desenvolver, testar e avaliar um protótipo de plataforma agêntica gamificada, baseada em embeddings e *Retrieval-Augmented Generation* (RAG), que apoie a criação assistida por IA de jornadas de letramento digital e treinamento corporativo personalizado a partir de documentos institucionais.
+
+**Problema:** organizações têm dificuldade em transformar normas, políticas, manuais e materiais internos em aprendizagem personalizada e atualizada. Ferramentas comerciais de IA generativa não têm acesso seguro e contextualizado a esses documentos, e criar trilhas, atividades e avaliações manualmente exige tempo e equipe especializada.
+
+**Escopo do protótipo:**
+
+| Componente | Descrição | Módulo |
+|---|---|---|
+| Pipeline RAG | Ingestão de documentos, extração de texto, segmentação, embeddings, indexação vetorial e recuperação contextualizada. | `ai/` |
+| Agentes de IA | Sugerem trilhas, milestones, atividades, avaliações e feedbacks a partir de um objetivo e de documentos selecionados; agente tutor para o colaborador. | `ai/` |
+| Gamificação | Níveis, XP, badges/conquistas e milestones de progresso. | `backend/` e `frontend/` |
+| Experiência do colaborador | Onboarding conversacional, nivelamento, dashboard da trilha, ambiente de aprendizagem com tutor. | `frontend/` |
+| Painel de gestão | Seleção de documentos, criação e revisão de jornadas, acompanhamento de progresso. | `frontend/` e `backend/` |
+| API e dados | Autenticação, persistência, regras de negócio e integração dos módulos. | `backend/` e `contracts/` |
+
+**Perfis de usuário:** colaborador (aprende), gestor (cria e valida jornadas) e administrador (configura a plataforma).
+
+**Princípios obrigatórios:**
+
+- O conteúdo gerado pelos agentes é **sugestão**: o gestor revisa e valida antes de publicar.
+- Usar apenas documentos **autorizados, sintéticos ou anonimizados**, com minimização de dados, controle de acesso e conformidade com a **LGPD** (Lei nº 13.709/2018).
+- Respostas e conteúdos gerados devem manter **rastreabilidade das fontes** consultadas.
+
 ## 1. Estrutura do repositório
 
 O Projeto Horizonte utiliza um **monorepo modular**: um único repositório GitHub, `projeto-horizonte`, com diretórios separados para cada responsabilidade.
@@ -161,3 +188,4 @@ Requisitos básicos, variáveis de ambiente e comandos de execução de cada mó
 | [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) | Pré-requisitos, configuração local, variáveis, execução, testes e solução de problemas. |
 | [`contracts/`](contracts/) | Contratos de interface entre módulos (OpenAPI, JSON Schema). |
 | [`CLAUDE.md`](CLAUDE.md) | Índice e regras para o desenvolvimento assistido por IA (Claude Code). |
+| [Protótipos no Figma](https://www.figma.com/design/7bFY4B5w0e5HukbLc3xB5F/Estudos-UI-UX---Sistemas-de-treinamento?node-id=47-2) | Estudos de UI/UX das telas da plataforma (acesso conforme permissões do arquivo). |
