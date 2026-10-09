@@ -1,0 +1,116 @@
+# =========================================================
+# Projeto Horizonte — arquivos que não devem ser versionados
+# =========================================================
+
+# ---------- Segredos e variáveis de ambiente ----------
+# Nunca versionar .env reais; apenas .env.example
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+credentials*.json
+service-account*.json
+
+# ---------- Sistema operacional ----------
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+*~
+
+# ---------- Editores e IDEs ----------
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+
+# ---------- Logs e temporários ----------
+logs/
+*.log
+tmp/
+temp/
+*.tmp
+*.bak
+
+# ---------- Node.js / Frontend ----------
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/*
+!.yarn/releases
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+dist/
+build/
+.next/
+.nuxt/
+.output/
+.svelte-kit/
+.vite/
+.turbo/
+.cache/
+.parcel-cache/
+*.tsbuildinfo
+
+# ---------- Python / IA / Backend ----------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+.python-version
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.ipynb_checkpoints/
+htmlcov/
+.coverage
+.coverage.*
+coverage/
+coverage.xml
+
+# ---------- Java / JVM ----------
+target/
+.gradle/
+*.class
+
+# ---------- IA: modelos, dados e artefatos pesados ----------
+# Versionar apenas amostras pequenas; dados e modelos ficam fora do Git
+ai/models/
+ai/data/raw/
+ai/data/processed/
+ai/vectorstore/
+*.ckpt
+*.safetensors
+*.onnx
+*.gguf
+*.pt
+*.pth
+*.h5
+mlruns/
+wandb/
+
+# ---------- Banco de dados local ----------
+*.sqlite
+*.sqlite3
+*.db
+
+# ---------- Docker / Infra ----------
+compose.override.yaml
+docker-compose.override.yml
+infra/volumes/
+.terraform/
+*.tfstate
+*.tfstate.*

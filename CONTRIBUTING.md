@@ -1,0 +1,104 @@
+# Como contribuir com o Projeto Horizonte
+
+Este documento resume as regras de colaboração. O passo a passo detalhado, com exemplos, está no [README](README.md#3-fluxo-de-trabalho-do-aluno-da-issue-à-entrega).
+
+> **Regra principal:** cada tarefa tem sua própria Issue e branch. **Ninguém faz push diretamente na `main`**: toda integração ocorre por Pull Request revisado.
+
+## 1. Issues
+
+- Uma Issue por **entrega verificável**. Documentação ou manutenção sem Issue prévia exige abrir uma Issue antes de desenvolver.
+- Use os templates disponíveis (**Tarefa** ou **Bug**) e preencha objetivo, critérios de aceitação, dependências e módulos envolvidos.
+- Leia a Issue antes de começar. Dúvidas vão nos **comentários da Issue**, antes de iniciar o desenvolvimento.
+- Mantenha o andamento atualizado no GitHub Project.
+
+## 2. Branches
+
+Fluxo **GitHub Flow**: apenas `main` é permanente; cada Issue gera uma branch temporária criada a partir da `main` atualizada.
+
+**Formato:** `tipo/area-numero-descricao-curta`
+
+| Tipo | Uso |
+|---|---|
+| `feat` | Nova funcionalidade |
+| `fix` | Correção de bug |
+| `docs` | Documentação |
+| `chore` | Organização, configuração, manutenção |
+| `refactor` | Reestruturação sem alterar comportamento |
+
+Áreas: `backend`, `frontend`, `ai`, `contracts`, `docs`, `infra` (ou `repo` para a estrutura geral do repositório).
+
+Exemplos: `feat/backend-12-login`, `feat/frontend-15-tela-login`, `fix/backend-21-validacao-token`.
+
+```bash
+git switch main
+git pull origin main
+git switch -c feat/backend-12-login
+```
+
+**Não** usar branches permanentes `backend`, `frontend` ou `ai`.
+
+## 3. Commits
+
+Commits pequenos, no formato [Conventional Commits](https://www.conventionalcommits.org/pt-br/):
+
+```text
+tipo(area): descrição no presente, em minúsculas
+```
+
+Exemplos:
+
+```text
+feat(backend): implementa login
+fix(frontend): corrige validação do formulário de cadastro
+docs(contracts): documenta endpoint de autenticação
+chore(infra): adiciona serviço do backend ao compose
+```
+
+- Inclua **somente** os arquivos da sua tarefa (`git add <caminho>`; evite `git add .` sem revisar).
+- Antes de cada commit, revise `git status` e `git diff`.
+- **Nunca** versione senhas, tokens, chaves de API ou arquivos `.env` reais. Use o [`.env.example`](.env.example).
+
+## 4. Pull Requests
+
+1. Publique a branch: `git push -u origin <sua-branch>`.
+2. Abra o PR com **base `main`** e **compare** na sua branch.
+3. Título no formato de commit (ex.: `feat(backend): login de usuários`).
+4. Preencha o template: descrição, como testar, **resultados dos testes locais** e `Closes #<número>`.
+5. Solicite revisão a outro membro autorizado ou ao responsável técnico.
+
+Regras:
+
+- Não misturar funcionalidades independentes no mesmo PR.
+- Mudanças em `contracts/` exigem revisão das equipes afetadas.
+- O projeto **não usa GitHub Actions nem CI**: quem abre o PR é responsável por executar os testes localmente e apresentar evidências.
+- **PR aberto não é tarefa finalizada.** Ela termina após revisão e merge.
+
+## 5. Revisão e integração
+
+- O revisor verifica: aderência à Issue, contratos respeitados, testes informados, ausência de credenciais e de arquivos gerados.
+- O autor corrige as observações na mesma branch (novos commits).
+- Após aprovação: **Squash and Merge** e exclusão da branch remota.
+
+Depois do merge, atualize o repositório local:
+
+```bash
+git switch main
+git pull origin main
+git branch -d feat/backend-12-login   # use -D somente após confirmar que o PR foi integrado
+```
+
+## 6. Critérios mínimos para considerar uma entrega concluída
+
+- [ ] A Issue tem objetivo e critérios de aceitação atendidos.
+- [ ] A implementação foi feita em branch própria, não diretamente na `main`.
+- [ ] Foram executadas verificações/testes locais relevantes, com resultados descritos no PR.
+- [ ] O código não contém segredos, credenciais nem artefatos indevidos.
+- [ ] Contratos e documentação foram atualizados, quando aplicável.
+- [ ] O Pull Request referencia a Issue correta e foi revisado.
+- [ ] O PR foi integrado na `main` e a Issue foi concluída no GitHub Project.
+
+O documento de referência completo está em [`docs/PROJETO_HORIZONTE_DOCUMENTO_INSTITUCIONAL.pdf`](docs/PROJETO_HORIZONTE_DOCUMENTO_INSTITUCIONAL.pdf).
+
+## Resumo
+
+`Issue → branch → implementação → testes locais → commit/push → Pull Request → revisão → Squash and Merge → Issue concluída`
