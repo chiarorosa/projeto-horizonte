@@ -114,3 +114,7 @@ infra/volumes/
 .terraform/
 *.tfstate
 *.tfstate.*
+
+# ---------- Claude Code (configurações pessoais) ----------
+CLAUDE.local.md
+.claude/settings.local.json
