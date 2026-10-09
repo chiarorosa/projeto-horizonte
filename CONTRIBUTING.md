@@ -87,6 +87,18 @@ git pull origin main
 git branch -d feat/backend-12-login   # use -D somente após confirmar que o PR foi integrado
 ```
 
+## 6. Critérios mínimos para considerar uma entrega concluída
+
+- [ ] A Issue tem objetivo e critérios de aceitação atendidos.
+- [ ] A implementação foi feita em branch própria, não diretamente na `main`.
+- [ ] Foram executadas verificações/testes locais relevantes, com resultados descritos no PR.
+- [ ] O código não contém segredos, credenciais nem artefatos indevidos.
+- [ ] Contratos e documentação foram atualizados, quando aplicável.
+- [ ] O Pull Request referencia a Issue correta e foi revisado.
+- [ ] O PR foi integrado na `main` e a Issue foi concluída no GitHub Project.
+
+O documento de referência completo está em [`docs/PROJETO_HORIZONTE_DOCUMENTO_INSTITUCIONAL.pdf`](docs/PROJETO_HORIZONTE_DOCUMENTO_INSTITUCIONAL.pdf).
+
 ## Resumo
 
 `Issue → branch → implementação → testes locais → commit/push → Pull Request → revisão → Squash and Merge → Issue concluída`
