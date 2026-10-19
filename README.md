@@ -166,7 +166,7 @@ A documentação é parte da entrega e deve ser mantida junto ao código.
 | `docs/DEVELOPMENT.md` | Pré-requisitos; configuração local; variáveis de ambiente; comandos de execução e testes; solução de problemas comuns. |
 | `contracts/` | Contratos de interface entre módulos, como OpenAPI e JSON Schema, quando aplicáveis. |
 
-**Diretriz do Horizonte:** um repositório, três frentes de desenvolvimento, uma branch por tarefa e integração via Pull Request revisado. O projeto **não utiliza GitHub Actions nem CI automatizada** nesta etapa: a responsabilidade pelos testes e pela apresentação de evidências é dos Alunos e Professores.
+**Diretriz do Horizonte:** um repositório, três frentes de desenvolvimento, uma branch por tarefa e integração via Pull Request revisado. O **GitHub Actions** valida cada PR (regras do `CONTRIBUTING.md` e qualidade da documentação), e o merge exige os checks verdes. Os testes de cada módulo ainda são executados localmente, e a apresentação das evidências no PR é responsabilidade dos Alunos e Professores.
 
 ## 5. Início rápido
 

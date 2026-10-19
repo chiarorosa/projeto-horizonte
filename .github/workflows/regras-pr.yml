@@ -1,0 +1,63 @@
+# Confere, em cada Pull Request, as regras do CONTRIBUTING.md §2–§4:
+# título no formato de commit, nome da branch e vínculo com a Issue.
+name: Regras do PR
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize, ready_for_review]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: regras-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  regras:
+    name: Regras do CONTRIBUTING
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Título, branch e Issue
+        # Os textos do PR chegam por variáveis de ambiente, nunca
+        # interpolados no script: um título pode conter qualquer coisa.
+        env:
+          TITULO: ${{ github.event.pull_request.title }}
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+          CORPO: ${{ github.event.pull_request.body }}
+          AUTOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          # PRs de bots (ex.: correções de segurança do Dependabot) seguem o
+          # formato deles e não têm Issue; a revisão humana continua valendo.
+          if [[ "$AUTOR" == *"[bot]" ]]; then
+            echo "PR aberto por $AUTOR: regras de título, branch e Issue não se aplicam."
+            exit 0
+          fi
+
+          tipos='feat|fix|docs|chore|refactor'
+          areas='backend|frontend|ai|contracts|docs|infra|repo'
+          falhas=0
+
+          if [[ "$TITULO" =~ ^($tipos)\(($areas)\):\ .+ ]]; then
+            echo "Título ok: $TITULO"
+          else
+            echo "::error title=Título do PR::'$TITULO' não segue 'tipo(area): descrição' (CONTRIBUTING.md §3). Tipos: ${tipos//|/, }. Áreas: ${areas//|/, }. Ex.: feat(backend): login de usuários"
+            falhas=1
+          fi
+
+          if [[ "$BRANCH" =~ ^($tipos)/($areas)-[0-9]+-[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+            echo "Branch ok: $BRANCH"
+          else
+            echo "::error title=Nome da branch::'$BRANCH' não segue 'tipo/area-numero-descricao' (CONTRIBUTING.md §2), em minúsculas e com hífens. Ex.: feat/backend-12-login"
+            falhas=1
+          fi
+
+          if grep -qiE '(close[sd]?|fix(e[sd])?|resolve[sd]?) #[0-9]+' <<< "$CORPO"; then
+            echo "Issue vinculada: ok"
+          else
+            echo "::error title=Issue vinculada::A descrição do PR precisa de 'Closes #<número da Issue>' (CONTRIBUTING.md §4)."
+            falhas=1
+          fi
+
+          exit "$falhas"

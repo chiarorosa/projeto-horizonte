@@ -22,7 +22,7 @@ Closes #<!-- número da Issue -->
 
 ## Resultado dos testes locais
 
-<!-- O projeto não usa CI: cole aqui os comandos executados e sua saída/evidência. -->
+<!-- O CI valida as regras do PR e a documentação; os testes dos módulos são locais. Cole aqui os comandos executados e sua saída/evidência. -->
 
 ```text
 

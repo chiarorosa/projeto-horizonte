@@ -70,7 +70,10 @@ Regras:
 
 - Não misturar funcionalidades independentes no mesmo PR.
 - Mudanças em `contracts/` exigem revisão das equipes afetadas.
-- O projeto **não usa GitHub Actions nem CI**: quem abre o PR é responsável por executar os testes localmente e apresentar evidências.
+- **CI (GitHub Actions):** cada PR passa por dois workflows, e o merge na `main` exige que todos os checks estejam verdes:
+  - **Regras do PR:** título `tipo(area): descrição`, branch `tipo/area-numero-descricao` e `Closes #N` na descrição. Se falhar, corrija o título ou a descrição no próprio PR, ou renomeie a branch.
+  - **Documentação:** lint de Markdown, links quebrados, validade dos workflows e do `compose.yaml`.
+- Os testes de cada módulo ainda **não** rodam no CI: quem abre o PR executa os testes localmente e apresenta as evidências. Para rodar as verificações do CI antes do push, veja [`docs/DEVELOPMENT.md` §4](docs/DEVELOPMENT.md#4-execução-e-testes).
 - **PR aberto não é tarefa finalizada.** Ela termina após revisão e merge.
 
 ## 5. Revisão e integração
@@ -91,13 +94,11 @@ git branch -d feat/backend-12-login   # use -D somente após confirmar que o PR 
 
 - [ ] A Issue tem objetivo e critérios de aceitação atendidos.
 - [ ] A implementação foi feita em branch própria, não diretamente na `main`.
-- [ ] Foram executadas verificações/testes locais relevantes, com resultados descritos no PR.
+- [ ] Foram executadas verificações/testes locais relevantes, com resultados descritos no PR, e os checks do CI estão verdes.
 - [ ] O código não contém segredos, credenciais nem artefatos indevidos.
 - [ ] Contratos e documentação foram atualizados, quando aplicável.
 - [ ] O Pull Request referencia a Issue correta e foi revisado.
 - [ ] O PR foi integrado na `main` e a Issue foi concluída no GitHub Project.
-
-O documento de referência completo está em [`docs/PROJETO_HORIZONTE_DOCUMENTO_INSTITUCIONAL.pdf`](docs/PROJETO_HORIZONTE_DOCUMENTO_INSTITUCIONAL.pdf).
 
 ## 7. Desenvolvimento assistido por IA
 

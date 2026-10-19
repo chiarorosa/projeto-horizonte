@@ -1,0 +1,22 @@
+# Verificação de links da documentação (lychee), usada no CI e localmente:
+#   docker run --rm -v "$PWD:/input" -w /input lycheeverse/lychee:0.24.2 --config lychee.toml "**/*.md"
+# A versão é a mesma que a lychee-action do CI usa.
+
+# Links para âncoras (#secao) também são conferidos.
+include_fragments = "full"
+
+# Respostas aceitas além de 2xx: 429 é limite de requisições, não link quebrado.
+accept = ["200..=299", "429"]
+
+max_retries = 3
+timeout = 20
+
+exclude = [
+  # Endereços locais dos exemplos de configuração.
+  '^https?://localhost',
+  '^https?://127\.0\.0\.1',
+  # O Figma exige login e responde 403 a robôs.
+  '^https://www\.figma\.com/',
+]
+
+exclude_path = ["context", "node_modules"]
