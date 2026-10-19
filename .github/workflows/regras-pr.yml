@@ -1,5 +1,6 @@
-# Confere, em cada Pull Request, as regras do CONTRIBUTING.md §2–§4:
-# título no formato de commit, nome da branch e vínculo com a Issue.
+# Confere, em cada Pull Request, as regras do CONTRIBUTING.md §2–§4 e §7:
+# título no formato de commit, nome da branch, vínculo com a Issue e
+# autoria do aluno (sem coautoria de ferramentas de IA).
 name: Regras do PR
 
 on:
@@ -8,6 +9,8 @@ on:
 
 permissions:
   contents: read
+  # Para ler os commits do PR (autoria).
+  pull-requests: read
 
 concurrency:
   group: regras-pr-${{ github.event.pull_request.number }}
@@ -60,4 +63,42 @@ jobs:
             falhas=1
           fi
 
+          exit "$falhas"
+
+      - name: Autoria do aluno
+        # Roda mesmo se o passo anterior falhou, para mostrar tudo de uma vez.
+        if: ${{ !cancelled() && !endsWith(github.event.pull_request.user.login, '[bot]') }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          CORPO: ${{ github.event.pull_request.body }}
+        run: |
+          # Ferramentas de IA cujos trailers e rodapés não podem aparecer.
+          ia='claude|anthropic|copilot|openai|chatgpt|codex|cursor|gemini|devin|aider|windsurf|codeium|tabnine'
+          falhas=0
+
+          commits=$(gh api "repos/$REPO/pulls/$PR/commits" --paginate --jq '.[]' | jq -s .)
+
+          bots=$(jq -r '.[] | select(.author.type == "Bot") | "\(.sha[0:7]) (\(.author.login))"' <<< "$commits")
+          if [[ -n "$bots" ]]; then
+            echo "::error title=Commit de bot::Commits feitos por conta de bot ou agente: $(tr '\n' ' ' <<< "$bots"). Os commits devem ser do aluno (CONTRIBUTING.md §7)."
+            falhas=1
+          fi
+
+          coautoria=$(jq -r --arg ia "$ia" '.[] | select(.commit.message | test("co-authored-by:[^\n]*(" + $ia + ")"; "i")) | .sha[0:7]' <<< "$commits")
+          if [[ -n "$coautoria" ]]; then
+            echo "::error title=Coautoria de IA::Commits com trailer Co-authored-by de ferramenta de IA: $(tr '\n' ' ' <<< "$coautoria"). Remova o trailer (git commit --amend ou git rebase -i) e faça push --force-with-lease na sua branch (CONTRIBUTING.md §7)."
+            falhas=1
+          fi
+
+          rodape=$(jq -r --arg ia "$ia" '.[] | select(.commit.message | test("generated (with|by)[^\n]*(" + $ia + ")"; "i")) | .sha[0:7]' <<< "$commits")
+          if [[ -n "$rodape" ]] || grep -qiE "generated (with|by).*($ia)" <<< "$CORPO"; then
+            echo "::error title=Rodapé de IA::Commit ou descrição do PR com rodapé gerado pela ferramenta. Declare o uso de IA só com a linha 'Desenvolvimento assistido por IA (<ferramenta>).' em Observações (CONTRIBUTING.md §7). ${rodape:+Commits: $(tr '\n' ' ' <<< "$rodape")}"
+            falhas=1
+          fi
+
+          if [[ "$falhas" == 0 ]]; then
+            echo "Autoria ok: $(jq length <<< "$commits") commit(s) sem coautoria ou rodapé de IA."
+          fi
           exit "$falhas"

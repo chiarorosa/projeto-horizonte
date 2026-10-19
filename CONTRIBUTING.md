@@ -71,7 +71,7 @@ Regras:
 - Não misturar funcionalidades independentes no mesmo PR.
 - Mudanças em `contracts/` exigem revisão das equipes afetadas.
 - **CI (GitHub Actions):** cada PR passa por dois workflows, e o merge na `main` exige que todos os checks estejam verdes:
-  - **Regras do PR:** título `tipo(area): descrição`, branch `tipo/area-numero-descricao` e `Closes #N` na descrição. Se falhar, corrija o título ou a descrição no próprio PR, ou renomeie a branch.
+  - **Regras do PR:** título `tipo(area): descrição`, branch `tipo/area-numero-descricao`, `Closes #N` na descrição e autoria do aluno (§7). Se falhar, o log do check diz o que corrigir.
   - **Documentação:** lint de Markdown, links quebrados, validade dos workflows e do `compose.yaml`.
 - Os testes de cada módulo ainda **não** rodam no CI: quem abre o PR executa os testes localmente e apresenta as evidências. Para rodar as verificações do CI antes do push, veja [`docs/DEVELOPMENT.md` §4](docs/DEVELOPMENT.md#4-execução-e-testes).
 - **PR aberto não é tarefa finalizada.** Ela termina após revisão e merge.
@@ -96,13 +96,21 @@ git branch -d feat/backend-12-login   # use -D somente após confirmar que o PR 
 - [ ] A implementação foi feita em branch própria, não diretamente na `main`.
 - [ ] Foram executadas verificações/testes locais relevantes, com resultados descritos no PR, e os checks do CI estão verdes.
 - [ ] O código não contém segredos, credenciais nem artefatos indevidos.
+- [ ] Os commits são do aluno, sem coautoria de IA; o uso de IA, se houve, está declarado no PR (§7).
 - [ ] Contratos e documentação foram atualizados, quando aplicável.
 - [ ] O Pull Request referencia a Issue correta e foi revisado.
 - [ ] O PR foi integrado na `main` e a Issue foi concluída no GitHub Project.
 
 ## 7. Desenvolvimento assistido por IA
 
-Ao usar o Claude Code (ou outro assistente), as mesmas regras valem: Issue, branch, PR revisado e nenhum segredo no Git. O [`CLAUDE.md`](CLAUDE.md) orienta o agente sobre quais documentos ler e atualizar; mantenha-o atualizado quando criar documentos ou seções novas. O código gerado por IA é responsabilidade de quem abre o PR e deve ser revisado e testado como qualquer outro.
+Ao usar um assistente de IA (Claude Code, Codex, GitHub Copilot, Cursor ou outro), as mesmas regras valem: Issue, branch, PR revisado e nenhum segredo no Git. O [`AGENTS.md`](AGENTS.md) orienta o assistente sobre quais documentos ler e atualizar; mantenha-o atualizado quando criar documentos ou seções novas. O [`CLAUDE.md`](CLAUDE.md) só o importa, para o Claude Code.
+
+**Autoria:** a contribuição é sempre **do aluno**, que responde pelo código e pelo texto gerados com IA, os revisa e os testa como qualquer outro.
+
+- Commits, pushes, Issues e PRs são feitos com a sua conta e o seu nome no git. Não use contas de bot nem agentes autônomos que abrem PRs.
+- Sem trailers de coautoria de IA (`Co-authored-by: <ferramenta de IA>`) e sem rodapés automáticos ("Generated with …") em commits ou PRs. O check **Regras do CONTRIBUTING** reprova o PR que tiver qualquer um deles. Coautoria entre pessoas da equipe continua permitida.
+- Declare o uso de IA **apenas** com uma linha em "Observações", na descrição do PR: `Desenvolvimento assistido por IA (<ferramenta>).`
+- No Claude Code, o `.claude/settings.json` do repositório já remove o trailer dos commits e escreve essa linha no PR. Em outras ferramentas, desligue a coautoria automática nas configurações delas.
 
 **Pasta `context/` (local):** cada colaborador pode criar uma pasta `context/` na raiz e colocar ali documentos de apoio (PDFs, anotações, especificações) para o assistente ler durante uma tarefa. Ela está no `.gitignore` e nunca é versionada. Se um documento precisar fazer parte do projeto, abra uma Issue e inclua o arquivo no local adequado (`docs/`, `contracts/` ou módulo) via PR. Evite colocar dados pessoais ou confidenciais sem necessidade.
 
