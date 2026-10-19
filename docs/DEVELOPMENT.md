@@ -64,7 +64,7 @@ Cada PR passa por dois workflows do GitHub Actions (`.github/workflows/`), e o m
 
 | Workflow | Check | O que confere |
 |---|---|---|
-| Regras do PR | Regras do CONTRIBUTING | Título `tipo(area): descrição`, branch `tipo/area-numero-descricao` e `Closes #N` na descrição ([CONTRIBUTING.md](../CONTRIBUTING.md) §2–§4). |
+| Regras do PR | Regras do CONTRIBUTING | Título `tipo(area): descrição`, branch `tipo/area-numero-descricao` e `Closes #N` na descrição ([CONTRIBUTING.md](../CONTRIBUTING.md) §2–§4); commits do aluno, sem coautoria nem rodapé de ferramenta de IA (§7). |
 | Documentação | Markdown (markdownlint) | Estilo dos arquivos `.md`, conforme `.markdownlint-cli2.jsonc`. |
 | Documentação | Links (lychee) | Links e âncoras dos arquivos `.md`, conforme `lychee.toml`. |
 | Documentação | Workflows e compose.yaml | Sintaxe dos workflows (actionlint) e do `compose.yaml`. |
@@ -96,7 +96,7 @@ _A definir pela equipe de IA: instalação de dependências, obtenção de model
 |---|---|
 | `Permission denied (publickey)` ao fazer push/pull | Configure uma chave SSH e adicione-a à sua conta: [documentação do GitHub](https://docs.github.com/pt/authentication/connecting-to-github-with-ssh). |
 | Push para `main` rejeitado | Esperado: crie uma branch `tipo/area-numero-descricao` e abra um PR. |
-| Check **Regras do CONTRIBUTING** falhou | Abra o log do check: ele diz o que corrigir. Título e `Closes #N` se corrigem editando o PR (o check roda de novo). Para a branch, crie outra com o nome certo (`git branch -m <novo-nome>` e `git push -u origin <novo-nome>`) e abra um novo PR. |
+| Check **Regras do CONTRIBUTING** falhou | Abra o log do check: ele diz o que corrigir. Título e `Closes #N` se corrigem editando o PR (o check roda de novo). Para a branch, crie outra com o nome certo (`git branch -m <novo-nome>` e `git push -u origin <novo-nome>`) e abra um novo PR. Para tirar um trailer `Co-authored-by` de IA: `git rebase -i main`, marque os commits com `reword`, apague a linha e faça `git push --force-with-lease`. |
 | Check **Markdown** ou **Links** falhou | Rode o comando correspondente em §4 ("Verificações do CI"), corrija e faça um novo push. Um link externo fora do ar pode ser temporário: rode o check de novo antes de alterar o texto. |
 | `git branch -d` falha após o merge | Merges por squash não são reconhecidos; confirme que o PR foi integrado e use `git branch -D <branch>`. |
 | Arquivos aparecem como alterados só por fim de linha | O `.gitattributes` normaliza para LF; rode `git add --renormalize .` em uma branch própria. |

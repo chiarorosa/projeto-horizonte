@@ -35,8 +35,10 @@ Closes #<!-- número da Issue -->
 - [ ] Executei a aplicação/módulo e os testes disponíveis localmente.
 - [ ] Revisei `git status` e `git diff`; não há credenciais, `.env` reais ou arquivos gerados.
 - [ ] Atualizei contratos e documentação, quando necessário.
+- [ ] Os commits são meus, sem coautoria de IA; se usei IA, declarei abaixo (CONTRIBUTING.md §7).
 - [ ] Solicitei revisão a outro membro autorizado ou ao responsável técnico.
 
 ## Observações
 
 <!-- Pendências, decisões, limitações ou dependências de outras equipes. -->
+<!-- Se usou IA, mantenha só esta linha (troque a ferramenta): Desenvolvimento assistido por IA (<ferramenta>). -->

@@ -187,5 +187,5 @@ Requisitos básicos, variáveis de ambiente e comandos de execução de cada mó
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Responsabilidades dos módulos, fluxos de comunicação e decisões arquiteturais. |
 | [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) | Pré-requisitos, configuração local, variáveis, execução, testes e solução de problemas. |
 | [`contracts/`](contracts/) | Contratos de interface entre módulos (OpenAPI, JSON Schema). |
-| [`CLAUDE.md`](CLAUDE.md) | Índice e regras para o desenvolvimento assistido por IA (Claude Code). |
+| [`AGENTS.md`](AGENTS.md) | Índice e regras para assistentes de IA (Claude Code, Codex, Copilot, Cursor etc.), incluindo a autoria do aluno; o [`CLAUDE.md`](CLAUDE.md) o importa. |
 | [Protótipos no Figma](https://www.figma.com/design/7bFY4B5w0e5HukbLc3xB5F/Estudos-UI-UX---Sistemas-de-treinamento?node-id=47-2) | Estudos de UI/UX das telas da plataforma (acesso conforme permissões do arquivo). |
