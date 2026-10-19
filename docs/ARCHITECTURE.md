@@ -59,4 +59,5 @@ Registre cada decisão relevante (stack, banco de dados, provedor de LLM, format
 | # | Data | Decisão | Motivo | Status |
 |---|---|---|---|---|
 | 001 | 2026-10-09 | Monorepo modular com GitHub Flow e integração via PR revisado. | Um único repositório para as três frentes, com isolamento por pastas e revisão obrigatória. | Aceita |
-| 002 | 2026-10-09 | Sem GitHub Actions/CI nesta etapa. | Testes e evidências são responsabilidade de alunos e professores, apresentados no PR. | Aceita |
+| 002 | 2026-10-09 | Sem GitHub Actions/CI nesta etapa. | Testes e evidências são responsabilidade de alunos e professores, apresentados no PR. | Substituída pela 003 |
+| 003 | 2026-10-19 | GitHub Actions valida cada PR: regras do `CONTRIBUTING.md` (título, branch, Issue vinculada) e qualidade da documentação (Markdown, links, workflows, `compose.yaml`). Os checks são obrigatórios no ruleset da `main`. Os testes de backend, frontend e IA seguem locais, com evidências no PR, até cada equipe definir a stack; então entram como jobs. | Com o repositório público, o Actions é gratuito; o que era conferido à mão passa a ser automático e igual para todos. | Aceita |

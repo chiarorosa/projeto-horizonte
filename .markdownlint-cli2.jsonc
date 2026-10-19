@@ -1,0 +1,19 @@
+// Lint de Markdown (markdownlint-cli2), usado no CI e localmente:
+//   npx markdownlint-cli2@0.23.2 "**/*.md"
+// A versão é a mesma que a markdownlint-cli2-action do CI embute.
+{
+  "config": {
+    "default": true,
+    // Prosa em português: uma linha por parágrafo, sem limite de colunas.
+    "MD013": false,
+    // As tabelas usam o separador compacto |---|.
+    "MD060": false
+  },
+  "ignores": [
+    "context/**",
+    "**/node_modules/**",
+    // Templates do GitHub começam por seções (##), não por um título.
+    ".github/ISSUE_TEMPLATE/**",
+    ".github/pull_request_template.md"
+  ]
+}

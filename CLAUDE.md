@@ -11,7 +11,7 @@ Projeto: plataforma agêntica gamificada com RAG para capacitação corporativa.
 - Nunca versionar segredos, `.env` reais, modelos ou dados brutos (ver `.gitignore`).
 - Não inventar stack, dependências ou comandos que as equipes ainda não definiram. Se for necessário, pergunte ou registre como "a definir".
 - Não alterar módulos de outra equipe nem `contracts/` sem que a Issue peça isso explicitamente.
-- Não há CI: execute localmente as verificações disponíveis e cole as evidências no PR.
+- O CI (GitHub Actions) valida as regras do PR e a documentação; os testes dos módulos seguem locais. Rode as verificações de `docs/DEVELOPMENT.md` §4 antes do push e cole as evidências no PR.
 
 ## Índice de documentos: quando ler
 
@@ -23,7 +23,7 @@ Projeto: plataforma agêntica gamificada com RAG para capacitação corporativa.
 | Entender módulos, limites e integrações | `docs/ARCHITECTURE.md` §2–§4 |
 | Tomar ou consultar decisões técnicas (stack etc.) | `docs/ARCHITECTURE.md` §5 |
 | Configurar ambiente, variáveis, rodar e testar | `docs/DEVELOPMENT.md` §1–§4 |
-| Erro de git, SSH ou ambiente | `docs/DEVELOPMENT.md` §5 |
+| Erro de git, SSH ou ambiente, ou check do CI falhando | `docs/DEVELOPMENT.md` §5 |
 | Trabalhar dentro de um módulo | `<módulo>/README.md` |
 | Integração entre módulos (API, schemas, erros) | `contracts/README.md` e os arquivos em `contracts/` |
 | Objetivo, escopo, perfis e princípios (LGPD, validação humana, fontes) | `README.md` "Sobre o Horizonte" |
@@ -44,6 +44,7 @@ Fonte de verdade em caso de conflito: Issue > `CONTRIBUTING.md` / `docs/` > este
 7. **Merge** (humano, Squash and Merge), seguido de `git switch main && git pull && git fetch --prune && git branch -D <branch>`.
 
 GitHub Project `unisenac-pesquisa-26-27` (`gh project ... 1 --owner chiarorosa`, requer permissão `project` no `gh`):
+
 - Issues novas entram sozinhas como *Backlog* (Auto-add, ao criar ou editar). Se não estiver lá: `gh project item-add 1 --owner chiarorosa --url <issue>`.
 - Status: *In progress* ao começar e *In review* ao abrir o PR (confira depois, porque os workflows do Project podem alterá-lo). O merge move para *Done*.
 
@@ -58,6 +59,7 @@ GitHub Project `unisenac-pesquisa-26-27` (`gh project ... 1 --owner chiarorosa`,
 | Escolha de stack ou mudança de arquitetura | `docs/ARCHITECTURE.md` §5 (nova linha de decisão) |
 | Responsabilidade ou estrutura de um módulo | `<módulo>/README.md` e `docs/ARCHITECTURE.md` §2 |
 | Fluxo de colaboração (branches, PR, revisão) | `CONTRIBUTING.md` (e `README.md` se for o resumo) |
+| Workflow do CI (`.github/workflows/`) | `docs/DEVELOPMENT.md` §4 (como rodar localmente) e `CONTRIBUTING.md` §4 |
 | Novo documento ou seção importante | o índice desta página |
 
 ## Pasta `context/` (local)
