@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "Se usar este trabalho, cite-o com os metadados abaixo."
+type: software
+title: "Projeto Horizonte: plataforma inteligente para capacitação contínua assistida por IA generativa e gamificação"
+abstract: >-
+  Protótipo de plataforma agêntica gamificada, baseada em embeddings e
+  Retrieval-Augmented Generation (RAG), que apoia a criação assistida por IA
+  de jornadas de letramento digital e treinamento corporativo personalizado a
+  partir de documentos institucionais. Projeto de pesquisa aplicada do
+  UniSenac-RS (linha Transformação Digital e Segurança da Informação).
+authors:
+  - name: "Equipe do Projeto Horizonte (UniSenac-RS)"
+repository-code: "https://github.com/chiarorosa/projeto-horizonte"
+license: Apache-2.0
+keywords:
+  - inteligência artificial generativa
+  - retrieval-augmented generation
+  - RAG
+  - agentes de IA
+  - gamificação
+  - capacitação corporativa
+  - letramento digital
+  - LGPD

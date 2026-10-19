@@ -40,6 +40,7 @@ O assistente ajuda; quem contribui é o aluno, que responde pelo que entrega (`C
 | Objetivo, escopo, perfis e princípios (LGPD, validação humana, fontes) | `README.md` "Sobre o Horizonte" |
 | Telas e fluxos de interface | Figma (link em `README.md` §6) |
 | Visão geral, onboarding | `README.md` §1 e §5 |
+| Licença, citação acadêmica, reporte de vulnerabilidade | `README.md` §7, `CITATION.cff` e `SECURITY.md` |
 | Material de apoio do colaborador | `context/` (local, não versionado; ver abaixo) |
 
 Fonte de verdade em caso de conflito: Issue > `CONTRIBUTING.md` / `docs/` > este arquivo. Ao encontrar um conflito, aponte-o ao usuário.
