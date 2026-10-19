@@ -1,4 +1,13 @@
-# Projeto Horizonte — Repositório e fluxo de desenvolvimento
+# Projeto Horizonte: capacitação corporativa com IA generativa, RAG e gamificação
+
+[![Regras do PR](https://github.com/chiarorosa/projeto-horizonte/actions/workflows/regras-pr.yml/badge.svg)](https://github.com/chiarorosa/projeto-horizonte/actions/workflows/regras-pr.yml)
+[![Documentação](https://github.com/chiarorosa/projeto-horizonte/actions/workflows/documentacao.yml/badge.svg)](https://github.com/chiarorosa/projeto-horizonte/actions/workflows/documentacao.yml)
+[![Licença do código: Apache-2.0](https://img.shields.io/badge/c%C3%B3digo-Apache--2.0-blue)](LICENSE)
+[![Licença da documentação: CC BY 4.0](https://img.shields.io/badge/docs-CC%20BY%204.0-lightgrey)](LICENSE-DOCS)
+
+O **Projeto Horizonte** é um protótipo de **plataforma de capacitação contínua** em que **agentes de IA generativa** transformam normas, políticas e manuais de uma organização em **trilhas de aprendizagem gamificadas** (níveis, XP, badges e milestones), com um **tutor de IA** para o colaborador. O conteúdo é recuperado dos documentos institucionais por **RAG** (*Retrieval-Augmented Generation*) com embeddings, mantém a rastreabilidade das fontes e é validado por um gestor antes de ser publicado, em conformidade com a **LGPD**. É um projeto de pesquisa aplicada do **UniSenac-RS**.
+
+**In English:** Horizonte is an applied research prototype (UniSenac-RS, Brazil) of a gamified, agent-based corporate learning platform. Generative AI agents use Retrieval-Augmented Generation (RAG) over an organization's own documents to suggest learning paths, activities and assessments, which a manager reviews before publishing, with source traceability and LGPD (Brazil's data protection law) compliance.
 
 > **Guia de contribuição para as equipes de Backend, Frontend e Inteligência Artificial.**
 >
@@ -188,4 +197,12 @@ Requisitos básicos, variáveis de ambiente e comandos de execução de cada mó
 | [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) | Pré-requisitos, configuração local, variáveis, execução, testes e solução de problemas. |
 | [`contracts/`](contracts/) | Contratos de interface entre módulos (OpenAPI, JSON Schema). |
 | [`AGENTS.md`](AGENTS.md) | Índice e regras para assistentes de IA (Claude Code, Codex, Copilot, Cursor etc.), incluindo a autoria do aluno; o [`CLAUDE.md`](CLAUDE.md) o importa. |
+| [`SECURITY.md`](SECURITY.md) | Como reportar vulnerabilidades e dados expostos de forma privada. |
 | [Protótipos no Figma](https://www.figma.com/design/7bFY4B5w0e5HukbLc3xB5F/Estudos-UI-UX---Sistemas-de-treinamento?node-id=47-2) | Estudos de UI/UX das telas da plataforma (acesso conforme permissões do arquivo). |
+
+## 7. Licença e citação
+
+- **Código:** [Apache License 2.0](LICENSE).
+- **Documentação** (arquivos `.md` e o conteúdo de `docs/`): [Creative Commons Atribuição 4.0 Internacional (CC BY 4.0)](LICENSE-DOCS).
+
+Para citar o projeto em trabalhos acadêmicos, use os metadados de [`CITATION.cff`](CITATION.cff) ou o botão **Cite this repository** na página do repositório.
