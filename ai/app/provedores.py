@@ -6,7 +6,7 @@ simulações, não precisem carregar o PyTorch nem conectar ao banco.
 
 from llama_index.core import VectorStoreIndex
 from llama_index.core.embeddings import BaseEmbedding
-from sqlalchemy.engine import URL, make_url
+from sqlalchemy.engine import make_url
 
 from app.config import Settings
 from app.erros import AppError
@@ -15,6 +15,9 @@ from app.rag import Servicos
 TABELA = "chunks"  # o PGVectorStore cria a tabela "data_chunks"
 TIMEOUT_S = 30
 TENTATIVAS = 3  # o cliente repete com espera crescente em 429, timeout e erros 5xx
+# Limite de tokens de saída. O padrão do LlamaIndex (256) não basta para modelos de
+# raciocínio, que gastam parte dos tokens "pensando" antes de responder.
+MAX_TOKENS_SAIDA = 2048
 
 
 def _exigir(settings: Settings, *nomes: str) -> None:
@@ -28,10 +31,15 @@ def _valor(settings: Settings, nome: str) -> str:
     return valor.get_secret_value() if hasattr(valor, "get_secret_value") else valor
 
 
-def urls_do_banco(database_url: str) -> tuple[URL, URL]:
-    """DATABASE_URL do Neon → conexões síncrona (psycopg2) e assíncrona (asyncpg, não usada)."""
+def urls_do_banco(database_url: str) -> tuple[str, str]:
+    """DATABASE_URL do Neon → conexões síncrona (psycopg2) e assíncrona (asyncpg, não usada).
+
+    Devolve texto com a senha: str(URL) do SQLAlchemy a esconderia como "***".
+    """
     url = make_url(database_url)
-    return url.set(drivername="postgresql+psycopg2"), url.set(drivername="postgresql+asyncpg", query={})
+    sincrona = url.set(drivername="postgresql+psycopg2")
+    assincrona = url.set(drivername="postgresql+asyncpg", query={})
+    return sincrona.render_as_string(hide_password=False), assincrona.render_as_string(hide_password=False)
 
 
 def criar_embeddings(settings: Settings) -> BaseEmbedding:
@@ -79,5 +87,6 @@ def criar_servicos(settings: Settings) -> Servicos:
         api_base=settings.openrouter_base_url,
         max_retries=TENTATIVAS,
         timeout=TIMEOUT_S,
+        max_tokens=MAX_TOKENS_SAIDA,
     )
     return Servicos(indice=criar_indice(settings), llm=llm, modelo=settings.openrouter_model)

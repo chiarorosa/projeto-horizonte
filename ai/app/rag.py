@@ -58,6 +58,10 @@ def consultar(servicos: Servicos, pergunta: str, documentos_autorizados: list[st
     uso = _uso(resposta.raw, servicos.modelo, round((time.perf_counter() - inicio) * 1000))
     log.info("consulta modelo=%s tokens_entrada=%s tokens_saida=%s latencia_ms=%s custo_usd=%s",
              uso.modelo, uso.tokens_entrada, uso.tokens_saida, uso.latencia_ms, uso.custo_usd)
+    if not resposta.text.strip():
+        # Ex.: modelo de raciocínio que gastou todos os tokens de saída pensando.
+        raise AppError(502, "RESPOSTA_VAZIA_DO_LLM", "O modelo de LLM não gerou resposta. Tente de novo ou troque o modelo.",
+                       {"modelo": uso.modelo})
 
     return ConsultaResposta(
         resposta=resposta.text.strip(),
@@ -80,10 +84,11 @@ def _campo(objeto: Any, nome: str) -> Any:
 
 
 def _uso(raw: Any, modelo: str, latencia_ms: int) -> Uso:
-    """Tokens e custo informados pelo provedor (o OpenRouter devolve em `usage`)."""
+    """Modelo que respondeu, tokens e custo informados pelo provedor (o OpenRouter devolve em `model` e `usage`)."""
     usage = _campo(raw, "usage") if raw is not None else None
+    modelo_real = _campo(raw, "model") if raw is not None else None
     return Uso(
-        modelo=modelo,
+        modelo=modelo_real or modelo,
         tokens_entrada=_campo(usage, "prompt_tokens") if usage is not None else None,
         tokens_saida=_campo(usage, "completion_tokens") if usage is not None else None,
         latencia_ms=latencia_ms,

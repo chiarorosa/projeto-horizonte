@@ -2,7 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 from llama_index.core import VectorStoreIndex
 from llama_index.core.embeddings import MockEmbedding
-from llama_index.core.llms import MockLLM
+from llama_index.core.llms import CompletionResponse, MockLLM
 
 from app.main import create_app, obter_servicos
 from app.rag import Servicos, indexar
@@ -64,6 +64,44 @@ def test_lista_de_documentos_vazia_responde_400(cliente):
 
     assert res.status_code == 400
     assert "documentos_autorizados" in res.json()["erro"]["detalhes"]["campos"]
+
+
+class LLMFixo:
+    """LLM simulado que devolve um texto e uma resposta bruta no formato do OpenRouter."""
+
+    def __init__(self, texto: str, raw: dict):
+        self.texto, self.raw = texto, raw
+
+    def complete(self, _prompt: str) -> CompletionResponse:
+        return CompletionResponse(text=self.texto, raw=self.raw)
+
+
+RAW_OPENROUTER = {
+    "model": "liquid/lfm-2.5-2.6b:free",
+    "choices": [{"finish_reason": "stop"}],
+    "usage": {"prompt_tokens": 437, "completion_tokens": 40, "cost": 0},
+}
+
+
+def test_uso_registra_o_modelo_que_respondeu(servicos, cliente):
+    # Com o roteador "openrouter/free", o modelo real muda a cada chamada.
+    servicos.llm, servicos.modelo = LLMFixo("A cada 90 dias [1].", RAW_OPENROUTER), "openrouter/free"
+
+    uso = consultar(cliente, documentos_autorizados=["doc-senhas"]).json()["uso"]
+
+    assert uso["modelo"] == "liquid/lfm-2.5-2.6b:free"
+    assert (uso["tokens_entrada"], uso["tokens_saida"], uso["custo_usd"]) == (437, 40, 0)
+
+
+def test_resposta_vazia_do_llm_responde_502(servicos, cliente):
+    # Modelos de raciocínio podem gastar todos os tokens pensando e não escrever a resposta.
+    raw = {**RAW_OPENROUTER, "choices": [{"finish_reason": "length"}]}
+    servicos.llm = LLMFixo("", raw)
+
+    res = consultar(cliente, documentos_autorizados=["doc-senhas"])
+
+    assert res.status_code == 502
+    assert res.json()["erro"]["codigo"] == "RESPOSTA_VAZIA_DO_LLM"
 
 
 def test_reindexar_substitui_a_versao_anterior(servicos, cliente):
