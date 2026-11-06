@@ -23,7 +23,7 @@ Variáveis no `.env` local (modelo em [`../.env.example`](../.env.example)):
 | `AI_PORT` | Porta local do serviço (padrão `8001`). |
 | `OPENROUTER_API_KEY` | Chave do OpenRouter. **Nunca** vai para o Frontend nem para o Git. |
 | `OPENROUTER_BASE_URL` | `https://openrouter.ai/api/v1`. |
-| `OPENROUTER_MODEL` | Modelo de LLM usado na geração. Prefira um modelo fixo com sufixo `:free` (ex.: o id copiado de [openrouter.ai/models](https://openrouter.ai/models)): o roteador `openrouter/free` troca de modelo a cada chamada, o que atrapalha comparar resultados. O modelo que respondeu fica em `uso.modelo`. |
+| `OPENROUTER_MODEL` | Modelo de LLM usado na geração. Prefira um modelo fixo com sufixo `:free` (lista dos gratuitos: [openrouter.ai/models?q=free](https://openrouter.ai/models?q=free); passo a passo no [README](../README.md#como-obter-os-valores-do-neon-e-do-openrouter)): o roteador `openrouter/free` troca de modelo a cada chamada, o que atrapalha comparar resultados. O modelo que respondeu fica em `uso.modelo`. |
 | `EMBEDDING_PROVIDER` | `local` (Sentence Transformers, padrão, sem custo) ou `openrouter`. |
 | `EMBEDDING_MODEL` | Modelo de embeddings. Padrão: `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` (multilíngue, 384 dimensões). |
 | `DATABASE_URL` | Conexão com o PostgreSQL (Neon) com pgvector, a mesma do backend. |

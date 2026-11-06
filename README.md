@@ -130,6 +130,23 @@ As variáveis ficam no `.env` local (não versionado). O [`.env.example`](.env.e
 | `EMBEDDING_PROVIDER` | ai | `local` (Sentence Transformers) ou `openrouter`. |
 | `EMBEDDING_MODEL` | ai | Modelo de embeddings. |
 
+### Como obter os valores do Neon e do OpenRouter
+
+Cada aluno cria as próprias contas e guarda os valores só no `.env` da **raiz** do repositório (`projeto-horizonte/.env`, não na pasta de cima). Nunca cole chaves ou senhas em Issues, PRs ou no chat.
+
+**`DATABASE_URL` (Neon):**
+
+1. Em [neon.tech](https://neon.tech), crie um projeto. A região de São Paulo (`sa-east-1`) é a mais próxima.
+2. No painel do projeto, clique em **Connect** e **desligue "Connection pooling"**. O Prisma precisa da conexão **direta** para as migrações: o endereço do *host* não pode ter `-pooler`.
+3. Copie a *connection string* (termina em `?sslmode=require...`) para `DATABASE_URL`. O backend e a IA usam a mesma.
+4. Não é preciso ativar o pgvector: o serviço de IA cria a extensão `vector` na primeira indexação.
+
+**`OPENROUTER_API_KEY` e `OPENROUTER_MODEL` (OpenRouter):**
+
+1. Em [openrouter.ai](https://openrouter.ai), vá em **Keys → Create Key** e copie a chave (`sk-or-...`) para `OPENROUTER_API_KEY`. Se quiser, defina ali um limite de crédito.
+2. Para escolher um modelo sem custo, filtre a lista pelos gratuitos: [openrouter.ai/models?q=free](https://openrouter.ai/models?q=free). Copie o id de um modelo terminado em `:free` para `OPENROUTER_MODEL`.
+3. No primeiro teste de integração usamos `OPENROUTER_MODEL=openrouter/free`. Ele não é um modelo, e sim um **roteador** que escolhe um modelo gratuito diferente a cada chamada (o modelo que respondeu aparece em `uso.modelo`). Serve para começar; para comparar resultados, fixe um id `:free`.
+
 ## 5. Fluxo de trabalho do aluno: da Issue à entrega
 
 **Regras:** nada de push direto na `main`; uma Issue por entrega verificável e uma branch por Issue; nada de branches permanentes `backend`, `frontend` ou `ai`; não misture funcionalidades independentes no mesmo PR. Detalhes em [`CONTRIBUTING.md`](CONTRIBUTING.md).
