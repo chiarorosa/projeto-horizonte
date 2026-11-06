@@ -34,7 +34,7 @@ backend/
 
 ## Execução e testes
 
-Pré-requisito: [Node.js](https://nodejs.org/) 24 ou mais recente. As variáveis vêm do `.env` da **raiz** do repositório (`cp .env.example .env`); preencha pelo menos `DATABASE_URL` com a sua conexão do Neon.
+Pré-requisito: [Node.js](https://nodejs.org/) 24 ou mais recente. As variáveis vêm do `.env` da **raiz** do repositório (`cp .env.example .env`); preencha pelo menos `DATABASE_URL` com a conexão do banco compartilhado (passo a passo no [README](../README.md#como-obter-os-valores-do-neon-e-do-openrouter)).
 
 ```bash
 cd backend
@@ -42,9 +42,12 @@ npm install
 npm run dev          # http://localhost:8000/health e http://localhost:8000/docs
 npm test             # testes (não precisam do banco)
 npm run typecheck    # checagem de tipos
-npm run db:migrate   # cria e aplica migrações no Neon depois de alterar o schema
+npm run db:migrate   # SÓ na branch dev-banco do Neon: cria e aplica migrações
+npx prisma migrate deploy   # na main compartilhada, depois do merge: só aplica
 npm run build && npm start   # versão compilada, como no deploy
 ```
+
+**Teste os endpoints pelo Swagger:** com o servidor no ar, abra `http://localhost:8000/docs`, escolha o endpoint, clique em **Try it out** e depois em **Execute**. Funciona em qualquer sistema e mostra a requisição e a resposta.
 
 **Para criar um endpoint:** escreva o teste em `test/`, implemente a rota em `src/app.ts` (ou em um arquivo de rotas importado por ele), valide a entrada com Zod, lance `AppError` para erros esperados e documente o endpoint em `src/openapi.ts`.
 

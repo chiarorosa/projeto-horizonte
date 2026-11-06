@@ -12,6 +12,7 @@ O projeto é uma plataforma agêntica gamificada com RAG para capacitação corp
 - Nunca versionar segredos, `.env` reais, chaves de API, modelos, índices vetoriais ou dados brutos (ver `.gitignore`).
 - Usar só documentos **autorizados, sintéticos ou anonimizados** (LGPD), manter a **rastreabilidade das fontes** e lembrar que o conteúdo gerado é **sugestão** até um gestor validar.
 - Não inventar stack, dependência ou comando que a equipe não definiu: pergunte ou escreva "a definir".
+- **Banco compartilhado (Neon):** nunca rodar `npm run db:migrate` na branch `main` do Neon; migrações só na `dev-banco`, pelo responsável pelo banco (README §4).
 - Não alterar o módulo de outra equipe sem que a Issue peça. Mudanças na integração (§7) exigem revisão das equipes afetadas.
 - Não fazer commit, push, PR ou merge sem o pedido explícito do aluno.
 
@@ -116,6 +117,7 @@ Fluxo: Frontend → Backend → IA, por HTTP/JSON. O Frontend nunca chama a IA d
 ## 8. Verificações antes do push
 
 - Os testes de cada módulo, com os comandos do README do módulo. Cole a saída no PR.
+- **Endpoints: teste pelo Swagger** (`/docs` do backend e da IA → *Try it out*) sempre que possível, em vez de `curl`. Funciona em qualquer sistema e mostra o formato esperado.
 - O lint de Markdown, o mesmo do CI (precisa de Node.js): `npx markdownlint-cli2@0.23.2 "**/*.md"`.
 - O CI (GitHub Actions) confere ainda o título do PR, a branch, o `Closes #N`, a autoria sem IA, os links dos `.md` e a sintaxe dos workflows. Se um check falhar, o log dele diz o que corrigir.
 
