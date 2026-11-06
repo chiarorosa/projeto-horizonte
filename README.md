@@ -138,24 +138,24 @@ Guarde os valores só no `.env` da **raiz** do repositório (`projeto-horizonte/
 
 | Branch do Neon | Quem usa | Regra |
 |---|---|---|
-| `main` | Todos (backend e IA) | Banco compartilhado. **Nunca rode `npm run db:migrate` nela**: o comando pode propor apagar o banco, e os dados de todos iriam junto. |
-| `dev-banco` | Só o responsável pelo banco | Onde as migrações são criadas e testadas (`npm run db:migrate`). É uma cópia da `main`; errar ali não afeta ninguém. |
+| `production` | Todos (backend e IA) | Banco compartilhado (é a branch padrão do Neon; o nome não tem a ver com deploy). **Nunca rode `npm run db:migrate` nela**: o comando pode propor apagar o banco, e os dados de todos iriam junto. |
+| `dev-banco` | Só o responsável pelo banco | Onde as migrações são criadas e testadas (`npm run db:migrate`). É uma cópia da `production`; errar ali não afeta ninguém. |
 
 Para o aluno:
 
 1. Aceite o convite do Neon que chega por e-mail.
-2. No projeto, clique em **Connect**, escolha a branch **`main`** (ou `dev-banco`, se você for o responsável pelo banco) e **desligue "Connection pooling"**. O Prisma precisa da conexão **direta**: o endereço do *host* não pode ter `-pooler`.
+2. No projeto, clique em **Connect**, escolha a branch **`production`** (ou `dev-banco`, se você for o responsável pelo banco) e **desligue "Connection pooling"**. O Prisma precisa da conexão **direta**: o endereço do *host* não pode ter `-pooler`.
 3. Copie a *connection string* (termina em `?sslmode=require...`) para `DATABASE_URL`. O backend e a IA usam a mesma.
 
 No banco, cada módulo tem o seu schema: o **`public`** é do Prisma (backend) e o **`rag`** é dos vetores da IA (criado na primeira indexação, com a extensão pgvector). Não crie tabelas à mão em nenhum dos dois.
 
-**Novas migrações:** o responsável cria a migração na `dev-banco` e a envia no PR (`backend/prisma/migrations/`). Depois do merge, aplica na `main` com `cd backend && npx prisma migrate deploy`, que só aplica migrações e nunca apaga dados.
+**Novas migrações:** o responsável cria a migração na `dev-banco` e a envia no PR (`backend/prisma/migrations/`). Depois do merge do PR, aplica na `production` com `cd backend && npx prisma migrate deploy`, que só aplica migrações e nunca apaga dados.
 
 Para a coordenação (uma vez):
 
 1. Na organização do Neon, em **People → Invite member**, convide cada aluno pelo e-mail com o papel **Collaborator** (o plano gratuito tem membros ilimitados).
 2. No projeto, em **Settings → Project permissions**, dê **Editor** a cada aluno. Não use **Settings → Sharing**, que o Neon está descontinuando.
-3. Em **Branches**, crie a `dev-banco` a partir da `main` (o plano gratuito permite 10 branches por projeto).
+3. Em **Branches**, crie a `dev-banco` com *parent* `production` (o plano gratuito permite 10 branches por projeto).
 
 **`OPENROUTER_API_KEY` e `OPENROUTER_MODEL` (OpenRouter):**
 
