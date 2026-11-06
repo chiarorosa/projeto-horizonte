@@ -18,4 +18,4 @@ exclude = [
   '^https://www\.figma\.com/',
 ]
 
-exclude_path = ["context", "node_modules"]
+exclude_path = ["context", "node_modules", ".venv"]
