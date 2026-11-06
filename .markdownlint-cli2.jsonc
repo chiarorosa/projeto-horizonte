@@ -12,6 +12,7 @@
   "ignores": [
     "context/**",
     "**/node_modules/**",
+    "**/.venv/**",
     // Templates do GitHub começam por seções (##), não por um título.
     ".github/ISSUE_TEMPLATE/**",
     ".github/pull_request_template.md"
