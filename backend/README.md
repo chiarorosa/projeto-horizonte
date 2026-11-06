@@ -42,8 +42,8 @@ npm install
 npm run dev          # http://localhost:8000/health e http://localhost:8000/docs
 npm test             # testes (não precisam do banco)
 npm run typecheck    # checagem de tipos
-npm run db:migrate   # SÓ na branch dev-banco do Neon: cria e aplica migrações
-npx prisma migrate deploy   # na production (compartilhada), depois do merge: só aplica
+npm run db:migrate   # SÓ o responsável pelo banco, na dev-banco: cria e aplica migrações
+npx prisma migrate deploy   # na production, depois do merge: só aplica
 npm run build && npm start   # versão compilada, como no deploy
 ```
 
