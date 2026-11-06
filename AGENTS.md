@@ -12,7 +12,7 @@ O projeto é uma plataforma agêntica gamificada com RAG para capacitação corp
 - Nunca versionar segredos, `.env` reais, chaves de API, modelos, índices vetoriais ou dados brutos (ver `.gitignore`).
 - Usar só documentos **autorizados, sintéticos ou anonimizados** (LGPD), manter a **rastreabilidade das fontes** e lembrar que o conteúdo gerado é **sugestão** até um gestor validar.
 - Não inventar stack, dependência ou comando que a equipe não definiu: pergunte ou escreva "a definir".
-- **Banco compartilhado (Neon):** nunca rodar `npm run db:migrate` na branch `main` do Neon; migrações só na `dev-banco`, pelo responsável pelo banco (README §4).
+- **Banco compartilhado (Neon):** desenvolvimento só na branch `dev-banco` do Neon; a `production` é reservada para o que já foi integrado (só `prisma migrate deploy`, seed e indexação depois do merge). `npm run db:migrate` só pelo responsável pelo banco, na `dev-banco` (README §4).
 - Não alterar o módulo de outra equipe sem que a Issue peça. Mudanças na integração (§7) exigem revisão das equipes afetadas.
 - Não fazer commit, push, PR ou merge sem o pedido explícito do aluno.
 
