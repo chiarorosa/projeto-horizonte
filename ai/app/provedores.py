@@ -13,6 +13,10 @@ from app.erros import AppError
 from app.rag import Servicos
 
 TABELA = "chunks"  # o PGVectorStore cria a tabela "data_chunks"
+# Schema próprio da IA no banco compartilhado. O "public" é do Prisma (backend):
+# tabelas do pgvector ali seriam vistas como diferença e o `prisma migrate dev`
+# proporia apagar o banco.
+SCHEMA = "rag"
 TIMEOUT_S = 30
 TENTATIVAS = 3  # o cliente repete com espera crescente em 429, timeout e erros 5xx
 # Limite de tokens de saída. O padrão do LlamaIndex (256) não basta para modelos de
@@ -72,6 +76,7 @@ def criar_indice(settings: Settings) -> VectorStoreIndex:
         connection_string=sincrona,
         async_connection_string=assincrona,
         table_name=TABELA,
+        schema_name=SCHEMA,
         embed_dim=dimensao,
     )
     return VectorStoreIndex.from_vector_store(store, embed_model=embeddings)
