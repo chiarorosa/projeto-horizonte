@@ -13,7 +13,7 @@ export function StatusApi() {
   }, []);
 
   return (
-    <p role="status" className="status-api">
+    <p role="status">
       {texto}
     </p>
   );

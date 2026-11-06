@@ -1,6 +1,6 @@
-import { Link, NavLink, Outlet, useLocation } from "react-router";
+import { NavLink, Outlet } from "react-router";
 
-// Itens do menu lateral das telas 09 e 19 do Figma.
+// Estrutura mínima, sem estilo: implementar o layout e o design system do Figma é tarefa da equipe.
 export const MENU = [
   { caminho: "/", rotulo: "Visão geral" },
   { caminho: "/trilha", rotulo: "Minha trilha" },
@@ -10,35 +10,22 @@ export const MENU = [
 ];
 
 export function Layout() {
-  const { pathname } = useLocation();
-  const atual = MENU.find((item) => item.caminho === pathname)?.rotulo ?? "";
-
   return (
-    <div className="layout">
-      <aside className="menu-lateral">
-        <Link to="/" className="marca">
-          Onboarding
-          <small>Espaço do colaborador</small>
-        </Link>
-        <nav aria-label="Menu principal">
-          <ul>
-            {MENU.map((item) => (
-              <li key={item.caminho}>
-                <NavLink to={item.caminho} end>
-                  {item.rotulo}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <div className="rodape">Privacidade</div>
-      </aside>
-      <div>
-        <header className="barra-superior">{atual}</header>
-        <main className="conteudo">
-          <Outlet />
-        </main>
-      </div>
-    </div>
+    <>
+      <nav aria-label="Menu principal">
+        <ul>
+          {MENU.map((item) => (
+            <li key={item.caminho}>
+              <NavLink to={item.caminho} end>
+                {item.rotulo}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <main>
+        <Outlet />
+      </main>
+    </>
   );
 }
