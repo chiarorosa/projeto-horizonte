@@ -1,6 +1,6 @@
 # Como contribuir com o Projeto Horizonte
 
-Este documento resume as regras de colaboração. O passo a passo detalhado, com exemplos, está no [README](README.md#3-fluxo-de-trabalho-do-aluno-da-issue-à-entrega).
+Este documento resume as regras de colaboração. O passo a passo detalhado, com exemplos, está no [README](README.md#5-fluxo-de-trabalho-do-aluno-da-issue-à-entrega).
 
 > **Regra principal:** cada tarefa tem sua própria Issue e branch. **Ninguém faz push diretamente na `main`**: toda integração ocorre por Pull Request revisado.
 
@@ -25,7 +25,7 @@ Fluxo **GitHub Flow**: apenas `main` é permanente; cada Issue gera uma branch t
 | `chore` | Organização, configuração, manutenção |
 | `refactor` | Reestruturação sem alterar comportamento |
 
-Áreas: `backend`, `frontend`, `ai`, `contracts`, `docs`, `infra` (ou `repo` para a estrutura geral do repositório).
+Áreas: `backend`, `frontend`, `ai`, `docs` (documentação) ou `repo` (estrutura do repositório, CI e templates).
 
 Exemplos: `feat/backend-12-login`, `feat/frontend-15-tela-login`, `fix/backend-21-validacao-token`.
 
@@ -50,8 +50,8 @@ Exemplos:
 ```text
 feat(backend): implementa login
 fix(frontend): corrige validação do formulário de cadastro
-docs(contracts): documenta endpoint de autenticação
-chore(infra): adiciona serviço do backend ao compose
+docs(backend): documenta endpoint de autenticação
+chore(repo): ajusta template de Issue
 ```
 
 - Inclua **somente** os arquivos da sua tarefa (`git add <caminho>`; evite `git add .` sem revisar).
@@ -69,11 +69,11 @@ chore(infra): adiciona serviço do backend ao compose
 Regras:
 
 - Não misturar funcionalidades independentes no mesmo PR.
-- Mudanças em `contracts/` exigem revisão das equipes afetadas.
+- Mudanças na integração entre módulos (seção "Integração" dos READMEs de `backend/` e `ai/`) exigem revisão das equipes afetadas.
 - **CI (GitHub Actions):** cada PR passa por dois workflows, e o merge na `main` exige que todos os checks estejam verdes:
   - **Regras do PR:** título `tipo(area): descrição`, branch `tipo/area-numero-descricao`, `Closes #N` na descrição e autoria do aluno (§7). Se falhar, o log do check diz o que corrigir.
-  - **Documentação:** lint de Markdown, links quebrados, validade dos workflows e do `compose.yaml`.
-- Os testes de cada módulo ainda **não** rodam no CI: quem abre o PR executa os testes localmente e apresenta as evidências. Para rodar as verificações do CI antes do push, veja [`docs/DEVELOPMENT.md` §4](docs/DEVELOPMENT.md#4-execução-e-testes).
+  - **Documentação:** lint de Markdown, links quebrados, validade dos workflows.
+- Os testes de cada módulo ainda **não** rodam no CI: quem abre o PR executa os testes localmente e apresenta as evidências. Para rodar o lint de Markdown antes do push, veja o [`AGENTS.md`](AGENTS.md) §8.
 - **PR aberto não é tarefa finalizada.** Ela termina após revisão e merge.
 
 ## 5. Revisão e integração
@@ -110,9 +110,9 @@ Ao usar um assistente de IA (Claude Code, Codex, GitHub Copilot, Cursor ou outro
 - Commits, pushes, Issues e PRs são feitos com a sua conta e o seu nome no git. Não use contas de bot nem agentes autônomos que abrem PRs.
 - Sem trailers de coautoria de IA (`Co-authored-by: <ferramenta de IA>`) e sem rodapés automáticos ("Generated with …") em commits ou PRs. O check **Regras do CONTRIBUTING** reprova o PR que tiver qualquer um deles. Coautoria entre pessoas da equipe continua permitida.
 - Declare o uso de IA **apenas** com uma linha em "Observações", na descrição do PR: `Desenvolvimento assistido por IA (<ferramenta>).`
-- No Claude Code, o `.claude/settings.json` do repositório já remove o trailer dos commits e escreve essa linha no PR. Em outras ferramentas, desligue a coautoria automática nas configurações delas.
+- Desligue a coautoria automática da sua ferramenta. No Claude Code, coloque `"attribution": { "commit": "", "pr": "" }` no seu `~/.claude/settings.json` pessoal; nas outras, procure a opção equivalente nas configurações.
 
-**Pasta `context/` (local):** cada colaborador pode criar uma pasta `context/` na raiz e colocar ali documentos de apoio (PDFs, anotações, especificações) para o assistente ler durante uma tarefa. Ela está no `.gitignore` e nunca é versionada. Se um documento precisar fazer parte do projeto, abra uma Issue e inclua o arquivo no local adequado (`docs/`, `contracts/` ou módulo) via PR. Evite colocar dados pessoais ou confidenciais sem necessidade.
+**Pasta `context/` (local):** cada colaborador pode criar uma pasta `context/` na raiz e colocar ali documentos de apoio (PDFs, anotações, especificações) para o assistente ler durante uma tarefa. Ela está no `.gitignore` e nunca é versionada. Se um documento precisar fazer parte do projeto, abra uma Issue e inclua o arquivo no local adequado (README ou módulo) via PR. Evite colocar dados pessoais ou confidenciais sem necessidade.
 
 ## Resumo
 

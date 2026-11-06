@@ -1,5 +1,5 @@
-# Qualidade da documentação e das configurações: Markdown, links,
-# workflows e compose.yaml. Como rodar localmente: docs/DEVELOPMENT.md §4.
+# Qualidade da documentação e dos workflows: Markdown, links e actionlint.
+# Como rodar localmente: AGENTS.md §8.
 name: Documentação
 
 on:
@@ -47,7 +47,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   configuracao:
-    name: Workflows e compose.yaml
+    name: Workflows (actionlint)
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -59,5 +59,3 @@ jobs:
         run: |
           bash <(curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/914e7df21a07ef503a81201c76d2b11c789d3fca/scripts/download-actionlint.bash) 1.7.12
           ./actionlint -color
-      - name: docker compose config
-        run: docker compose -f compose.yaml config --quiet
