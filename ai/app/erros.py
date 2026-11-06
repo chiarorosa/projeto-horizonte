@@ -45,6 +45,8 @@ def registrar_tratadores(app: FastAPI) -> None:
     async def http(req: Request, exc: HTTPException):
         if exc.status_code == 404:
             return resposta_erro(404, "ROTA_NAO_ENCONTRADA", f"Rota não encontrada: {req.method} {req.url.path}")
+        if exc.status_code == 400:  # ex.: corpo que não é UTF-8
+            return resposta_erro(400, "REQUISICAO_INVALIDA", "Corpo da requisição ilegível.")
         return resposta_erro(exc.status_code, "ERRO_HTTP", str(exc.detail))
 
     # Falhas do OpenRouter (cliente openai), depois das tentativas automáticas.

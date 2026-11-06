@@ -1,3 +1,4 @@
+import pytest
 from fastapi.testclient import TestClient
 from pydantic import BaseModel
 
@@ -50,6 +51,14 @@ def test_corpo_invalido_responde_400_com_os_campos():
     corpo = res.json()["erro"]
     assert corpo["codigo"] == "REQUISICAO_INVALIDA"
     assert "pergunta" in corpo["detalhes"]["campos"]
+
+
+@pytest.mark.parametrize("corpo", [b"{ruim", b'{"pergunta": "hor\xe1rio"}'], ids=["json-malformado", "nao-utf8"])
+def test_corpo_ilegivel_responde_400_requisicao_invalida(corpo):
+    res = cliente_com_rotas_de_teste().post("/validacao", content=corpo, headers={"Content-Type": "application/json"})
+
+    assert res.status_code == 400
+    assert res.json()["erro"]["codigo"] == "REQUISICAO_INVALIDA"
 
 
 def test_erro_inesperado_responde_500_sem_expor_a_mensagem():
