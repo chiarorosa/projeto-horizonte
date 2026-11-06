@@ -145,8 +145,9 @@ Cada aluno cria as próprias contas e guarda os valores só no `.env` da **raiz*
 
 1. Em [openrouter.ai](https://openrouter.ai), vá em **Keys → Create Key** e copie a chave (`sk-or-...`) para `OPENROUTER_API_KEY`. Se quiser, defina ali um limite de crédito.
 2. Para escolher um modelo sem custo, filtre a lista pelos gratuitos: [openrouter.ai/models?q=free](https://openrouter.ai/models?q=free). Copie o id de um modelo terminado em `:free` para `OPENROUTER_MODEL`.
-3. Em [Settings → Privacy](https://openrouter.ai/settings/privacy), o teste de integração usou **só uma opção ligada**: **"Allow free endpoints that train on request data"**. Sem ela, boa parte dos modelos `:free` fica indisponível, e a chamada falha com `No endpoints found matching your data policy` (no serviço de IA, `502` `FALHA_PROVEDOR`).
-   > **Atenção (LGPD):** com essa opção, o provedor gratuito pode **guardar e treinar com os prompts e as respostas**. Os prompts levam trechos dos documentos indexados. Com modelos gratuitos, use **apenas documentos sintéticos ou anonimizados**, nunca documentos internos reais.
+3. Em [Settings → Privacy](https://openrouter.ai/settings/privacy), deixe **desligada** a opção **"Allow free endpoints that train on request data"**. Com ela ligada, o provedor gratuito pode **guardar e treinar com os prompts e as respostas**, e os prompts levam trechos dos documentos indexados (LGPD). Testamos com ela desligada e o `openrouter/free` funcionou: o roteador passa a usar só provedores que não treinam com os dados, o que reduz os modelos disponíveis.
+   - Se um id `:free` fixo falhar com `No endpoints found matching your data policy` (no serviço de IA, `502` `FALHA_PROVEDOR`), aquele modelo só existe em provedores que treinam com os dados: troque de modelo em vez de ligar a opção.
+   - Mesmo assim, com modelos gratuitos use **apenas documentos sintéticos ou anonimizados**, nunca documentos internos reais.
 4. No primeiro teste de integração usamos `OPENROUTER_MODEL=openrouter/free`. Ele não é um modelo, e sim um **roteador** que escolhe um modelo gratuito diferente a cada chamada (o modelo que respondeu aparece em `uso.modelo`). Serve para começar; para comparar resultados, fixe um id `:free`.
 
 ## 5. Fluxo de trabalho do aluno: da Issue à entrega
