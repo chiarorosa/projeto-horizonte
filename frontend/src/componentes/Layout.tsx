@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useLocation } from "react-router";
+import { Link, NavLink, Outlet, useLocation } from "react-router";
 
 // Itens do menu lateral das telas 09 e 19 do Figma.
 export const MENU = [
@@ -16,10 +16,10 @@ export function Layout() {
   return (
     <div className="layout">
       <aside className="menu-lateral">
-        <NavLink to="/" className="marca">
+        <Link to="/" className="marca">
           Onboarding
           <small>Espaço do colaborador</small>
-        </NavLink>
+        </Link>
         <nav aria-label="Menu principal">
           <ul>
             {MENU.map((item) => (
