@@ -23,7 +23,7 @@ assignees: ""
 
 ## Ambiente
 
-- Módulo: backend / frontend / ai / infra
+- Módulo: backend / frontend / ai
 - Sistema operacional:
 - Versão/commit:
 

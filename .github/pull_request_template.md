@@ -9,9 +9,8 @@ Closes #<!-- número da Issue -->
 - [ ] `backend/`
 - [ ] `frontend/`
 - [ ] `ai/`
-- [ ] `contracts/` (exige alinhamento com as equipes afetadas)
-- [ ] `docs/`
-- [ ] `infra/`
+- [ ] Integração (seção "Integração" de um README de módulo; exige revisão das equipes afetadas)
+- [ ] Documentação ou estrutura do repositório
 
 ## Como testar
 
@@ -34,8 +33,8 @@ Closes #<!-- número da Issue -->
 - [ ] O PR trata de **uma única** Issue/funcionalidade.
 - [ ] Executei a aplicação/módulo e os testes disponíveis localmente.
 - [ ] Revisei `git status` e `git diff`; não há credenciais, `.env` reais ou arquivos gerados.
-- [ ] Atualizei contratos e documentação, quando necessário.
-- [ ] Os commits são meus, sem coautoria de IA; se usei IA, declarei abaixo (CONTRIBUTING.md §7).
+- [ ] Atualizei a integração e a documentação, quando necessário.
+- [ ] Os commits são meus, sem coautoria nem rodapé de IA; se usei IA, declarei abaixo (CONTRIBUTING.md §7).
 - [ ] Solicitei revisão a outro membro autorizado ou ao responsável técnico.
 
 ## Observações

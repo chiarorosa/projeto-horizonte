@@ -107,19 +107,11 @@ wandb/
 *.sqlite3
 *.db
 
-# ---------- Docker / Infra ----------
-compose.override.yaml
-docker-compose.override.yml
-infra/volumes/
-.terraform/
-*.tfstate
-*.tfstate.*
-
-# ---------- Claude Code (configurações pessoais) ----------
+# ---------- Assistentes de IA (configurações pessoais) ----------
 CLAUDE.local.md
-.claude/settings.local.json
+.claude/
 
 # ---------- Contexto local para assistentes de IA ----------
 # Documentos de apoio de cada colaborador; nunca versionar.
-# Para incluir um documento no projeto: Issue -> copiar para docs/ etc. -> PR.
+# Para incluir um documento no projeto: Issue -> copiar para o módulo ou README -> PR.
 context/

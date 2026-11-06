@@ -1,6 +1,5 @@
-# Verificação de links da documentação (lychee), usada no CI e localmente:
-#   docker run --rm -v "$PWD:/input" -w /input lycheeverse/lychee:0.24.2 --config lychee.toml "**/*.md"
-# A versão é a mesma que a lychee-action do CI usa.
+# Verificação de links da documentação (lychee), usada no CI
+# (workflow Documentação, versão 0.24.2).
 
 # Links para âncoras (#secao) também são conferidos.
 include_fragments = "full"

@@ -39,7 +39,7 @@ jobs:
           fi
 
           tipos='feat|fix|docs|chore|refactor'
-          areas='backend|frontend|ai|contracts|docs|infra|repo'
+          areas='backend|frontend|ai|docs|repo'
           falhas=0
 
           if [[ "$TITULO" =~ ^($tipos)\(($areas)\):\ .+ ]]; then
