@@ -1,0 +1,116 @@
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/600.css";
+@import "./tokens.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font: var(--texto-corpo);
+  color: var(--cor-texto);
+  background: var(--cor-canvas);
+}
+
+h1 {
+  font: var(--texto-titulo-1);
+  margin: 0 0 var(--espaco-2);
+}
+
+h2 {
+  font: var(--texto-titulo-2);
+  margin: 0 0 var(--espaco-2);
+}
+
+p {
+  margin: 0 0 var(--espaco-4);
+  color: var(--cor-muted);
+}
+
+a {
+  color: var(--cor-brand);
+}
+
+/* Layout das telas 09 e 19 do Figma: menu lateral + barra superior + conteúdo. */
+.layout {
+  display: grid;
+  grid-template-columns: 15rem 1fr;
+  min-height: 100vh;
+}
+
+.menu-lateral {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-6);
+  padding: var(--espaco-6) var(--espaco-4);
+  background: var(--cor-panel);
+  border-right: 1px solid var(--cor-borda);
+}
+
+.marca {
+  font: var(--texto-titulo-3);
+  color: var(--cor-texto);
+  text-decoration: none;
+}
+
+.marca small {
+  display: block;
+  font: var(--texto-corpo);
+  font-size: 0.8125rem;
+  color: var(--cor-muted);
+}
+
+.menu-lateral ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--espaco-1);
+}
+
+.menu-lateral a {
+  display: block;
+  padding: var(--espaco-2) var(--espaco-3);
+  border-radius: var(--raio);
+  color: var(--cor-texto);
+  text-decoration: none;
+}
+
+.menu-lateral a:hover {
+  background: var(--cor-brand-soft);
+}
+
+.menu-lateral a[aria-current="page"] {
+  background: var(--cor-brand);
+  color: var(--cor-panel);
+}
+
+.menu-lateral .rodape {
+  margin-top: auto;
+  font-size: 0.875rem;
+}
+
+.barra-superior {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--espaco-3) var(--espaco-8);
+  background: var(--cor-panel);
+  border-bottom: 1px solid var(--cor-borda);
+  color: var(--cor-muted);
+}
+
+.conteudo {
+  padding: var(--espaco-8);
+}
+
+.cartao {
+  background: var(--cor-panel);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  padding: var(--espaco-6);
+  margin-bottom: var(--espaco-4);
+}

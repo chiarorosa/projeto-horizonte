@@ -1,9 +1,13 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { VisaoGeral } from "./paginas/VisaoGeral";
+import { BrowserRouter } from "react-router";
+import { Rotas } from "./App";
+import "./estilos/global.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <VisaoGeral />
+    <BrowserRouter>
+      <Rotas />
+    </BrowserRouter>
   </StrictMode>,
 );
