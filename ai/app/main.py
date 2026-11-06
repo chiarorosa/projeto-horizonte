@@ -1,12 +1,18 @@
+from functools import lru_cache
+
 from fastapi import Depends, FastAPI
 
-from app.erros import AppError, registrar_tratadores
+from app.config import get_settings
+from app.erros import registrar_tratadores
 from app.modelos import ConsultaEntrada, ConsultaResposta
+from app.provedores import criar_servicos
 from app.rag import Servicos, consultar
 
 
+@lru_cache
 def obter_servicos() -> Servicos:
-    raise AppError(503, "SERVICO_NAO_CONFIGURADO", "Provedores de LLM e de embeddings ainda não configurados.")
+    # Criado na primeira consulta e reaproveitado; se faltar configuração, responde 503 e tenta de novo depois.
+    return criar_servicos(get_settings())
 
 
 def create_app() -> FastAPI:

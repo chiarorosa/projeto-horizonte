@@ -3,6 +3,7 @@
 import logging
 from typing import Any
 
+import openai
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -45,6 +46,22 @@ def registrar_tratadores(app: FastAPI) -> None:
         if exc.status_code == 404:
             return resposta_erro(404, "ROTA_NAO_ENCONTRADA", f"Rota não encontrada: {req.method} {req.url.path}")
         return resposta_erro(exc.status_code, "ERRO_HTTP", str(exc.detail))
+
+    # Falhas do OpenRouter (cliente openai), depois das tentativas automáticas.
+    @app.exception_handler(openai.RateLimitError)
+    async def limite(_req: Request, exc: openai.RateLimitError):
+        espera = exc.response.headers.get("retry-after")
+        return resposta_erro(429, "LIMITE_DO_PROVEDOR", "Limite de requisições do provedor de LLM. Tente mais tarde.",
+                             headers={"Retry-After": espera} if espera else None)
+
+    @app.exception_handler(openai.APITimeoutError)
+    async def timeout(_req: Request, _exc: openai.APITimeoutError):
+        return resposta_erro(504, "TEMPO_ESGOTADO_PROVEDOR", "O provedor de LLM não respondeu a tempo.")
+
+    @app.exception_handler(openai.APIError)
+    async def falha_provedor(_req: Request, exc: openai.APIError):
+        log.warning("Falha do provedor de LLM: %s", type(exc).__name__)
+        return resposta_erro(502, "FALHA_PROVEDOR", "Falha no provedor de LLM.")
 
     @app.exception_handler(Exception)
     async def inesperado(_req: Request, exc: Exception):
