@@ -110,6 +110,7 @@ Registre cada decisão relevante (stack, banco, provedor de LLM, autenticação 
 | 007 | 2026-11-06 | Backend: Node.js, TypeScript, Express, Prisma (ORM e Migrate), Zod, JWT, bcrypt, Swagger/OpenAPI, Vitest e Supertest; deploy no Render. | Stack definida pela coordenação ([`backend/README.md`](backend/README.md)). | Aceita |
 | 008 | 2026-11-06 | Frontend: React, TypeScript, Vite, React Router, React Hook Form, Zod, Zustand, Fetch API (TanStack Query opcional), Vitest, React Testing Library e Playwright; deploy na Vercel. | Stack definida pela coordenação ([`frontend/README.md`](frontend/README.md)). | Aceita |
 | 009 | 2026-11-06 | IA: Python, FastAPI, Pydantic, Uvicorn, LlamaIndex, OpenRouter (LLM e, opcionalmente, embeddings), Sentence Transformers e pgvector no PostgreSQL (Neon). | Stack definida pela coordenação ([`ai/README.md`](ai/README.md)). | Aceita |
+| 010 | 2026-11-06 | Frontend: MVP só para testar backend e IA, testes reduzidos a um teste de fumaça (Playwright adiado) e chamadas por `/api` com proxy (Vite em desenvolvimento, *rewrite* na Vercel). | Começo mais simples para a equipe de frontend; o proxy evita CORS e endereços no código. | Aceita |
 
 ## 4. Variáveis de ambiente
 
@@ -122,7 +123,8 @@ As variáveis ficam no `.env` local (não versionado). O [`.env.example`](.env.e
 | `BACKEND_PORT` | backend | Porta local da API. |
 | `JWT_SECRET` | backend | Segredo para assinatura de tokens. |
 | `FRONTEND_PORT` | frontend | Porta local da interface. |
-| `API_BASE_URL` | frontend | Endereço da API consumida pelo Frontend. |
+| `API_BASE_URL` | frontend | Endereço do backend. O frontend chama `/api` e o proxy do Vite repassa para cá. |
+| `VITE_USAR_DADOS_SIMULADOS` | frontend | `true` usa dados simulados nas telas, sem o backend no ar; `false` chama o backend. |
 | `AI_PORT` | ai | Porta local do serviço de IA. |
 | `OPENROUTER_API_KEY` | ai | Chave do OpenRouter (nunca no Frontend). |
 | `OPENROUTER_BASE_URL` | ai | `https://openrouter.ai/api/v1`. |
