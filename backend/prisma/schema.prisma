@@ -1,0 +1,12 @@
+// Modelos do banco (PostgreSQL no Neon). A conexão vem de DATABASE_URL,
+// lida no prisma.config.ts. Depois de alterar este arquivo, rode
+// `npm run db:migrate` para criar a migração e gerar o cliente.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}

@@ -6,19 +6,47 @@ API pública, autenticação, persistência, regras de negócio e gamificação 
 
 | Camada | Escolha |
 |---|---|
-| Linguagem e servidor | Node.js, TypeScript, Express |
+| Linguagem e servidor | Node.js 24, TypeScript (ESM), Express 5 |
 | Banco de dados | PostgreSQL (Neon) em `DATABASE_URL`, o mesmo em que a IA guarda os vetores |
-| ORM e migrações | Prisma ORM e Prisma Migrate |
-| Validação e segurança | Zod (entrada), JWT (`JWT_SECRET`) e bcrypt (senhas) |
-| Documentação da API | Swagger / OpenAPI, gerada a partir dos endpoints implementados |
+| ORM e migrações | Prisma ORM e Prisma Migrate (7.10) |
+| Validação e segurança | Zod (entrada e variáveis de ambiente), JWT (`JWT_SECRET`) e bcrypt (senhas) |
+| Documentação da API | Swagger / OpenAPI em `/docs`, mantida em `src/openapi.ts` |
 | Testes | Vitest e Supertest |
 | Deploy | [Render](https://render.com/) |
 
-A spec de um endpoint é escrita **antes** na Issue, seguindo o modelo da seção "Integração". Depois de implementado, ele aparece no Swagger, que passa a ser a referência do endpoint pronto.
+A spec de um endpoint é escrita **antes** na Issue, seguindo o modelo da seção "Integração". Depois de implementado, ele entra no `src/openapi.ts` e aparece no Swagger, que passa a ser a referência do endpoint pronto.
+
+## Estrutura
+
+```text
+backend/
+├── src/
+│   ├── app.ts          # Cria o app Express e registra as rotas
+│   ├── server.ts       # Sobe o servidor na BACKEND_PORT
+│   ├── config.ts       # Variáveis de ambiente validadas com Zod
+│   ├── erros.ts        # AppError e o formato de erro comum
+│   └── openapi.ts      # Documentação servida em /docs
+├── test/               # Testes (Vitest + Supertest), um arquivo por assunto
+├── prisma/
+│   └── schema.prisma   # Modelos do banco
+└── prisma.config.ts    # Conexão do Prisma (lê o .env da raiz)
+```
 
 ## Execução e testes
 
-*A definir na Issue do esqueleto do backend* (versão do Node.js, instalação, migrações, execução e testes).
+Pré-requisito: [Node.js](https://nodejs.org/) 24 ou mais recente. As variáveis vêm do `.env` da **raiz** do repositório (`cp .env.example .env`); preencha pelo menos `DATABASE_URL` com a sua conexão do Neon.
+
+```bash
+cd backend
+npm install
+npm run dev          # http://localhost:8000/health e http://localhost:8000/docs
+npm test             # testes (não precisam do banco)
+npm run typecheck    # checagem de tipos
+npm run db:migrate   # cria e aplica migrações no Neon depois de alterar o schema
+npm run build && npm start   # versão compilada, como no deploy
+```
+
+**Para criar um endpoint:** escreva o teste em `test/`, implemente a rota em `src/app.ts` (ou em um arquivo de rotas importado por ele), valide a entrada com Zod, lance `AppError` para erros esperados e documente o endpoint em `src/openapi.ts`.
 
 ## Integração (template)
 

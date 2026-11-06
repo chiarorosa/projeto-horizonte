@@ -81,6 +81,9 @@ htmlcov/
 coverage/
 coverage.xml
 
+# Cliente gerado pelo Prisma (npm run db:migrate)
+backend/generated/
+
 # ---------- Java / JVM ----------
 target/
 .gradle/
