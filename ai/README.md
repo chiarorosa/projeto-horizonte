@@ -10,7 +10,7 @@ RAG, agentes e inferência com LLMs do Projeto Horizonte. Recebe pedidos **somen
 | Orquestração RAG | LlamaIndex (preferencial): ingestão e *chunking*, recuperação semântica Top-K, construção de contexto e geração com citação das fontes |
 | LLM | [OpenRouter](https://openrouter.ai/docs) (`https://openrouter.ai/api/v1`); modelo escolhido por variável de ambiente, para trocar de modelo sem mudar o pipeline; *streaming* quando necessário |
 | Embeddings | Opção A: Sentence Transformers (local). Opção B: API de embeddings do OpenRouter. Modelo configurável. |
-| Banco vetorial | PostgreSQL (Neon) com a extensão pgvector: chunks, metadados e referências às fontes |
+| Banco vetorial | PostgreSQL (Neon) com a extensão pgvector, no schema `rag` (o `public` é do Prisma): chunks, metadados e referências às fontes |
 
 Um índice só pode ser consultado com o **mesmo modelo de embeddings** (e a mesma dimensão) que o criou. Trocar `EMBEDDING_MODEL` exige reindexar os documentos.
 
@@ -68,10 +68,21 @@ pytest                          # testes: sem rede, sem chave e sem banco
 python -m app                   # http://localhost:8001/health e http://localhost:8001/docs
 ```
 
-Indexar o documento de exemplo e consultar (com o serviço no ar):
+Indexar o documento de exemplo:
 
 ```bash
 python -m app.indexar exemplos/politica-de-senhas.md --id doc-politica-senhas --titulo "Política de Senhas"
+```
+
+**Teste os endpoints pelo Swagger**, que funciona igual em Windows, Linux e macOS e já mostra os formatos. Com o serviço no ar, abra `http://localhost:8001/docs`, clique em **`POST /consultas` → Try it out**, cole o corpo abaixo e clique em **Execute**.
+
+```json
+{ "pergunta": "De quanto em quanto tempo devo trocar a senha?", "documentos_autorizados": ["doc-politica-senhas"] }
+```
+
+Alternativa no terminal (Linux, macOS ou Git Bash; no PowerShell as aspas e a quebra de linha com `\` não funcionam assim):
+
+```bash
 curl -X POST http://localhost:8001/consultas -H "Content-Type: application/json" \
   -d '{"pergunta": "De quanto em quanto tempo devo trocar a senha?", "documentos_autorizados": ["doc-politica-senhas"]}'
 ```
