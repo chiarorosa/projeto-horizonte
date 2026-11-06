@@ -15,6 +15,9 @@ from app.rag import Servicos
 TABELA = "chunks"  # o PGVectorStore cria a tabela "data_chunks"
 TIMEOUT_S = 30
 TENTATIVAS = 3  # o cliente repete com espera crescente em 429, timeout e erros 5xx
+# Limite de tokens de saída. O padrão do LlamaIndex (256) não basta para modelos de
+# raciocínio, que gastam parte dos tokens "pensando" antes de responder.
+MAX_TOKENS_SAIDA = 2048
 
 
 def _exigir(settings: Settings, *nomes: str) -> None:
@@ -84,5 +87,6 @@ def criar_servicos(settings: Settings) -> Servicos:
         api_base=settings.openrouter_base_url,
         max_retries=TENTATIVAS,
         timeout=TIMEOUT_S,
+        max_tokens=MAX_TOKENS_SAIDA,
     )
     return Servicos(indice=criar_indice(settings), llm=llm, modelo=settings.openrouter_model)
