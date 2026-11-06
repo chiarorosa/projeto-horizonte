@@ -6,7 +6,7 @@ simulações, não precisem carregar o PyTorch nem conectar ao banco.
 
 from llama_index.core import VectorStoreIndex
 from llama_index.core.embeddings import BaseEmbedding
-from sqlalchemy.engine import URL, make_url
+from sqlalchemy.engine import make_url
 
 from app.config import Settings
 from app.erros import AppError
@@ -28,10 +28,15 @@ def _valor(settings: Settings, nome: str) -> str:
     return valor.get_secret_value() if hasattr(valor, "get_secret_value") else valor
 
 
-def urls_do_banco(database_url: str) -> tuple[URL, URL]:
-    """DATABASE_URL do Neon → conexões síncrona (psycopg2) e assíncrona (asyncpg, não usada)."""
+def urls_do_banco(database_url: str) -> tuple[str, str]:
+    """DATABASE_URL do Neon → conexões síncrona (psycopg2) e assíncrona (asyncpg, não usada).
+
+    Devolve texto com a senha: str(URL) do SQLAlchemy a esconderia como "***".
+    """
     url = make_url(database_url)
-    return url.set(drivername="postgresql+psycopg2"), url.set(drivername="postgresql+asyncpg", query={})
+    sincrona = url.set(drivername="postgresql+psycopg2")
+    assincrona = url.set(drivername="postgresql+asyncpg", query={})
+    return sincrona.render_as_string(hide_password=False), assincrona.render_as_string(hide_password=False)
 
 
 def criar_embeddings(settings: Settings) -> BaseEmbedding:

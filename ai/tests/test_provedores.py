@@ -55,10 +55,9 @@ def test_configuracao_incompleta_responde_503_com_as_variaveis():
     assert set(exc.value.detalhes["variaveis"]) == {"DATABASE_URL", "OPENROUTER_API_KEY", "OPENROUTER_MODEL"}
 
 
-def test_url_do_neon_vira_conexoes_do_sqlalchemy():
-    sincrona, assincrona = urls_do_banco("postgresql://u:s@ep-x.neon.tech/horizonte?sslmode=require&channel_binding=require")
+def test_url_do_neon_vira_conexoes_do_sqlalchemy_com_a_senha():
+    # O PGVectorStore recebe texto: str(URL) do SQLAlchemy esconderia a senha como "***".
+    sincrona, assincrona = urls_do_banco("postgresql://u:s3gr3do@ep-x.neon.tech/horizonte?sslmode=require&channel_binding=require")
 
-    assert sincrona.drivername == "postgresql+psycopg2"
-    assert sincrona.query["sslmode"] == "require"
-    assert assincrona.drivername == "postgresql+asyncpg"
-    assert dict(assincrona.query) == {}
+    assert sincrona == "postgresql+psycopg2://u:s3gr3do@ep-x.neon.tech/horizonte?channel_binding=require&sslmode=require"
+    assert assincrona == "postgresql+asyncpg://u:s3gr3do@ep-x.neon.tech/horizonte"
