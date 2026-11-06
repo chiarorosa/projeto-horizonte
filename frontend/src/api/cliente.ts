@@ -12,11 +12,11 @@ export class ErroApi extends Error {
   }
 }
 
-// Lidas a cada chamada (e não uma vez só) para os testes poderem trocar com vi.stubEnv.
-export function urlDaApi(): string {
-  return import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
-}
+// Todas as chamadas vão para /api no próprio frontend; o proxy do Vite (vite.config.ts)
+// repassa ao backend em API_BASE_URL.
+const PREFIXO = "/api";
 
+// Lida a cada chamada (e não uma vez só) para o teste poder trocar com vi.stubEnv.
 export function usarDadosSimulados(): boolean {
   return import.meta.env.VITE_USAR_DADOS_SIMULADOS === "true";
 }
@@ -24,7 +24,7 @@ export function usarDadosSimulados(): boolean {
 export async function requisitar<T>(caminho: string, opcoes: RequestInit = {}): Promise<T> {
   let resposta: Response;
   try {
-    resposta = await fetch(`${urlDaApi()}${caminho}`, {
+    resposta = await fetch(`${PREFIXO}${caminho}`, {
       ...opcoes,
       headers: { "Content-Type": "application/json", ...opcoes.headers },
     });

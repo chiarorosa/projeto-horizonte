@@ -10,7 +10,18 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     envDir: RAIZ,
-    server: { port: Number(env.FRONTEND_PORT || 3000) },
+    server: {
+      port: Number(env.FRONTEND_PORT || 3000),
+      // O navegador chama /api/... no próprio frontend e o Vite repassa ao backend (API_BASE_URL).
+      // Assim não há chamada para outro domínio (sem CORS) e nenhum endereço fica no código.
+      proxy: {
+        "/api": {
+          target: env.API_BASE_URL || "http://localhost:8000",
+          changeOrigin: true,
+          rewrite: (caminho) => caminho.replace(/^\/api/, ""),
+        },
+      },
+    },
     test: {
       environment: "jsdom",
       globals: true,
