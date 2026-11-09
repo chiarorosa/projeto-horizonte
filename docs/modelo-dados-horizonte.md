@@ -259,9 +259,9 @@ CHECK (jsonb_typeof("fontes") = 'array')
 ## 8. Implementação
 
 1. Implementar entidades, enums, relações, índices e restrições no `backend/prisma/schema.prisma`.
-2. Executar `npx prisma validate` e gerar a migração pelo fluxo do projeto.
+2. Na pasta `backend/`, o responsável pelo banco deve executar `npx prisma validate` e gerar a migração sem aplicá-la com `npm run db:migrate -- --create-only`, usando a conexão da branch Neon `dev-banco`.
 3. Incluir as restrições `CHECK` necessárias no SQL da migração e revisar o resultado.
-4. Aplicar a migração somente na branch Neon `dev-banco` durante o desenvolvimento. Não criar tabelas manualmente no SQL Editor.
+4. Após revisar o SQL, aplicar a migração com `npm run db:migrate`, somente pelo responsável pelo banco e na branch Neon `dev-banco` durante o desenvolvimento. Não criar tabelas manualmente no SQL Editor.
 5. Verificar no PostgreSQL as PKs, FKs, índices, tipos, defaults, nulabilidade e ações `ON DELETE`.
 6. Implementar e testar as regras de negócio no backend.
 7. Versionar `backend/prisma/migrations/`, atualizar `backend/README.md` com o ER e abrir o Pull Request.
