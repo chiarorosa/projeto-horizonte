@@ -1,0 +1,46 @@
+# Depois do merge, comenta em cada Issue fechada pelo PR com o link das
+# Issues de continuação (linha "Continuação:" da descrição, conferida pelo
+# check Regras do PR). Não cria Issues: quem as cria é o aluno (AGENTS.md §2).
+name: Continuação
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: read
+  # Para comentar nas Issues fechadas pelo PR.
+  issues: write
+
+jobs:
+  comentar:
+    name: Link para a continuação
+    if: ${{ github.event.pull_request.merged }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Comentar nas Issues fechadas
+        # A descrição chega por variável de ambiente, nunca interpolada no script.
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          CORPO: ${{ github.event.pull_request.body }}
+        run: |
+          # Mesma leitura do passo Continuação do workflow Regras do PR.
+          corpo=$(tr -d '\r' <<< "$CORPO" | perl -0pe 's/<!--.*?-->//gs; s/^```.*?^```//gms')
+          linha=$(grep -iE '^[[:space:]]*continua(ção|cao)[[:space:]]*:' <<< "$corpo" | head -n 1 || true)
+          continuacao=$(grep -oE '#[0-9]+' <<< "$linha" | sort -u -t '#' -k 2n | paste -sd ' ' || true)
+          fechadas=$(grep -oiE '(close[sd]?|fix(e[sd])?|resolve[sd]?) #[0-9]+' <<< "$corpo" | grep -oE '[0-9]+' | sort -un || true)
+
+          if [[ -z "$continuacao" ]]; then
+            echo "Sem Issues de continuação; nada a comentar."
+            exit 0
+          fi
+
+          lista=${continuacao// /, }
+          for n in $fechadas; do
+            gh issue comment "$n" --repo "$REPO" \
+              --body "Fechada pelo #$PR. **Continua em:** $lista."
+            echo "#$n: comentário com a continuação ($lista)."
+          done

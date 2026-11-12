@@ -57,7 +57,7 @@ assignees: ""
 
 ## Dependências
 
-<!-- Issues ou serviços dos quais esta tarefa depende (ex.: #12). -->
+<!-- Issues ou serviços dos quais esta tarefa depende (ex.: #12). Se for a continuação de outra entrega, cite a Issue original. -->
 
 ## Branch sugerida
 

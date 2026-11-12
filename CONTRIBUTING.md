@@ -63,16 +63,18 @@ chore(repo): ajusta template de Issue
 1. Publique a branch: `git push -u origin <sua-branch>`.
 2. Abra o PR com **base `main`** e **compare** na sua branch.
 3. Título no formato de commit (ex.: `feat(backend): login de usuários`).
-4. Preencha o template: descrição, como testar, **resultados dos testes locais** e `Closes #<número>`.
-5. Solicite revisão a outro membro autorizado ou ao responsável técnico.
+4. Preencha o template: descrição, como testar, **resultados dos testes locais**, `Closes #<número>` e a linha `Continuação:`.
+5. **Continuação:** o que ficou para depois vira Issue antes do merge (template Tarefa, citando a Issue original em "Dependências") e entra na linha `Continuação: #12, #13`. Se a entrega está completa, `Continuação: Nenhuma`. Próximos passos escritos só no PR somem do Project quando o merge fecha a Issue.
+6. Solicite revisão a outro membro autorizado ou ao responsável técnico.
 
 Regras:
 
 - Não misturar funcionalidades independentes no mesmo PR.
 - Mudanças na integração entre módulos (seção "Integração" dos READMEs de `backend/` e `ai/`) exigem revisão das equipes afetadas.
 - **CI (GitHub Actions):** cada PR passa por dois workflows, e o merge na `main` exige que todos os checks estejam verdes:
-  - **Regras do PR:** título `tipo(area): descrição`, branch `tipo/area-numero-descricao`, `Closes #N` na descrição e autoria do aluno (§7). Se falhar, o log do check diz o que corrigir.
+  - **Regras do PR:** título `tipo(area): descrição`, branch `tipo/area-numero-descricao`, `Closes #N` na descrição, `Continuação:` com Issues abertas ou `Nenhuma` e autoria do aluno (§7). Se falhar, o log do check diz o que corrigir.
   - **Documentação:** lint de Markdown, links quebrados, validade dos workflows.
+- Depois do merge, o workflow **Continuação** comenta em cada Issue fechada pelo PR com o link das Issues de continuação.
 - Os testes de cada módulo ainda **não** rodam no CI: quem abre o PR executa os testes localmente e apresenta as evidências. Para rodar o lint de Markdown antes do push, veja o [`AGENTS.md`](AGENTS.md) §8.
 - **PR aberto não é tarefa finalizada.** Ela termina após revisão e merge.
 
@@ -99,6 +101,7 @@ git branch -d feat/backend-12-login   # use -D somente após confirmar que o PR 
 - [ ] Os commits são do aluno, sem coautoria de IA; o uso de IA, se houve, está declarado no PR (§7).
 - [ ] Contratos e documentação foram atualizados, quando aplicável.
 - [ ] O Pull Request referencia a Issue correta e foi revisado.
+- [ ] O que ficou pendente está em Issues de continuação abertas, listadas no PR.
 - [ ] O PR foi integrado na `main` e a Issue foi concluída no GitHub Project.
 
 ## 7. Desenvolvimento assistido por IA
