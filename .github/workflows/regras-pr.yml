@@ -1,6 +1,6 @@
 # Confere, em cada Pull Request, as regras do CONTRIBUTING.md §2–§4 e §7:
-# título no formato de commit, nome da branch, vínculo com a Issue e
-# autoria do aluno (sem coautoria de ferramentas de IA).
+# título no formato de commit, nome da branch, vínculo com a Issue,
+# Issues de continuação e autoria do aluno (sem coautoria de ferramentas de IA).
 name: Regras do PR
 
 on:
@@ -11,6 +11,8 @@ permissions:
   contents: read
   # Para ler os commits do PR (autoria).
   pull-requests: read
+  # Para conferir as Issues de continuação.
+  issues: read
 
 concurrency:
   group: regras-pr-${{ github.event.pull_request.number }}
@@ -63,6 +65,64 @@ jobs:
             falhas=1
           fi
 
+          exit "$falhas"
+
+      - name: Continuação
+        # Os próximos passos de uma entrega precisam virar Issues abertas antes
+        # do merge, senão somem do Project quando a Issue fecha (CONTRIBUTING.md §4).
+        if: ${{ !cancelled() && !endsWith(github.event.pull_request.user.login, '[bot]') }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          CORPO: ${{ github.event.pull_request.body }}
+        run: |
+          # O exemplo dentro dos comentários HTML do template não conta, e o
+          # GitHub envia a descrição com fim de linha CRLF.
+          corpo=$(tr -d '\r' <<< "$CORPO" | perl -0pe 's/<!--.*?-->//gs')
+          linha=$(grep -iE '^[[:space:]]*continua(ção|cao)[[:space:]]*:' <<< "$corpo" | head -n 1 || true)
+          valor=$(sed -E 's/^[^:]*:[[:space:]]*//; s/[[:space:]]+$//' <<< "$linha")
+          fechadas=$(grep -oiE '(close[sd]?|fix(e[sd])?|resolve[sd]?) #[0-9]+' <<< "$corpo" | grep -oE '[0-9]+' || true)
+          ajuda="Escreva 'Continuação: Nenhuma' se a entrega está completa, ou crie as Issues do que ficou pendente (template Tarefa) e liste-as: 'Continuação: #12, #13' (CONTRIBUTING.md §4)."
+
+          if [[ -z "$linha" ]]; then
+            echo "::error title=Continuação::A descrição do PR não tem a linha 'Continuação:'. $ajuda"
+            exit 1
+          fi
+          if [[ -z "$valor" ]]; then
+            echo "::error title=Continuação::A linha 'Continuação:' está vazia. $ajuda"
+            exit 1
+          fi
+          if [[ "${valor,,}" =~ ^nenhuma\.?$ ]]; then
+            echo "Continuação: nenhuma (entrega completa)."
+            exit 0
+          fi
+
+          issues=$(grep -oE '#[0-9]+' <<< "$valor" | tr -d '#' | sort -un || true)
+          if [[ -z "$issues" ]]; then
+            echo "::error title=Continuação::'Continuação: $valor' não cita nenhuma Issue. $ajuda"
+            exit 1
+          fi
+
+          falhas=0
+          for n in $issues; do
+            if grep -qx "$n" <<< "$fechadas"; then
+              echo "::error title=Continuação::#$n é a Issue que este PR fecha; a continuação precisa ser uma Issue nova."
+              falhas=1
+              continue
+            fi
+            if ! info=$(gh api "repos/$REPO/issues/$n" --jq '"\(.state) \(.pull_request != null)"' 2>/dev/null); then
+              echo "::error title=Continuação::A Issue #$n não existe. $ajuda"
+              falhas=1
+            elif [[ "$info" == *" true" ]]; then
+              echo "::error title=Continuação::#$n é um Pull Request, não uma Issue."
+              falhas=1
+            elif [[ "$info" != "open "* ]]; then
+              echo "::error title=Continuação::A Issue #$n está fechada; a continuação precisa estar aberta."
+              falhas=1
+            else
+              echo "Continuação: #$n aberta."
+            fi
+          done
           exit "$falhas"
 
       - name: Autoria do aluno
