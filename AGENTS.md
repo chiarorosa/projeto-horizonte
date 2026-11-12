@@ -14,7 +14,7 @@ O projeto é uma plataforma agêntica gamificada com RAG para capacitação corp
 - Não inventar stack, dependência ou comando que a equipe não definiu: pergunte ou escreva "a definir".
 - **Banco compartilhado (Neon):** desenvolvimento só na branch `dev-banco` do Neon; a `production` é reservada para o que já foi integrado (só `prisma migrate deploy`, seed e indexação depois do merge). `npm run db:migrate` só pelo responsável pelo banco, na `dev-banco` (README §4).
 - Não alterar o módulo de outra equipe sem que a Issue peça. Mudanças na integração (§7) exigem revisão das equipes afetadas.
-- Não fazer commit, push, PR ou merge sem o pedido explícito do aluno.
+- Não fazer commit, push, Issue, PR ou merge sem o pedido explícito do aluno.
 
 ## 2. Autoria e atribuição de IA
 
@@ -33,7 +33,7 @@ A **spec fica na própria Issue**, nas seções do template Tarefa (§5). Cada f
 | 1. Especificar | Lê a Issue (`gh issue view <N>`), lista as suposições e pergunta o que estiver ambíguo. Se a spec estiver incompleta, propõe o texto para o aluno colar na Issue. | Spec completa na Issue: objetivo, requisitos, integração, fora do escopo, critérios de aceitação verificáveis. |
 | 2. Planejar | Divide em passos pequenos, cada um com a sua verificação (`passo → verificar: …`). | Plano na seção "Plano" da Issue. |
 | 3. Implementar | Um passo por vez, só o escopo da spec, mínimo de código, com teste quando houver lógica. | Commits pequenos na branch da Issue. |
-| 4. Verificar | Roda os testes e as verificações (§8), confere cada critério de aceitação e revisa o `git diff`. | Evidências coladas no PR. |
+| 4. Verificar | Roda os testes e as verificações (§8), confere cada critério de aceitação e revisa o `git diff`. Lista ao aluno o que ficou de fora: critérios não atendidos, itens adiados, "fica para depois" no código ou nas notas. | Evidências coladas no PR e a lista do que ficou pendente (§6, Continuação). |
 
 Se no meio do caminho a spec se mostrar errada, **pare e atualize a Issue** antes de continuar. Não resolva em silêncio. Correções de uma linha (erro de digitação, link) podem pular as fases 1–2.
 
@@ -102,7 +102,10 @@ gh pr create --base main --title "feat(ai): esqueleto do serviço de IA" --body-
 
 - **Tipos:** `feat`, `fix`, `docs`, `chore`, `refactor`. **Áreas:** `backend`, `frontend`, `ai`, `docs`, `repo`.
 - O título do PR segue `tipo(area): descrição`. A descrição segue `.github/pull_request_template.md`, com `Closes #N` e as evidências dos testes locais.
-- **Continuação:** o merge fecha a Issue, então o que ficar pendente **não** pode ficar só no texto do PR. Antes do PR, crie uma Issue (template Tarefa) para cada próximo passo, citando a Issue original em "Dependências", e preencha a linha `Continuação: #12, #13` do template. Se a entrega está completa: `Continuação: Nenhuma`. Depois do merge, o CI comenta na Issue fechada com o link da continuação.
+- **Continuação:** o merge fecha a Issue, então o que ficar pendente **não** pode ficar só no texto do PR. Antes do PR, crie uma Issue (template Tarefa) para cada próximo passo, citando a Issue original em "Dependências", e preencha a linha `Continuação: #12, #13` do template. Se a entrega está completa: `Continuação: Nenhuma`. Depois do merge, o CI comenta na Issue fechada com o link da continuação. O assistente:
+  - **pergunta** ao aluno, antes de abrir o PR, se a entrega está completa ou tem continuação, mostrando a lista da fase 4 (§3). Nunca escreve `Continuação: Nenhuma` sem a confirmação do aluno: o CI não tem como saber que havia algo pendente;
+  - se houver continuação, **propõe** o texto de cada Issue (template Tarefa, com a Issue original em "Dependências") e só a cria depois que o aluno aprovar, com a conta dele (`gh issue create`); então preenche `Continuação: #N`;
+  - nunca deixa os próximos passos só em "Observações" nem cria Issues por dedução própria.
 - O merge é humano, depois da revisão e com os checks verdes (Squash and Merge). Em seguida: `git switch main && git pull && git fetch --prune && git branch -D <branch>`.
 
 ## 7. Módulos e integração
