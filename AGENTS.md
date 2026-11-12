@@ -79,7 +79,7 @@ Toda Issue usa um dos templates de `.github/ISSUE_TEMPLATE/` (Issue em branco es
 | Especificação → Suposições e dúvidas | O que ainda não está definido; perguntar nos comentários antes de começar. |
 | Critérios de aceitação | Checkboxes verificáveis: um comando, um teste ou um comportamento observável. |
 | Plano | Preenchido antes de codar: `passo → verificar: …`. |
-| Dependências | Issues ou serviços dos quais depende (ex.: `#12`). |
+| Dependências | Issues ou serviços dos quais depende (ex.: `#12`); numa continuação, a Issue original. |
 | Branch sugerida | `tipo/area-numero-descricao-curta`. |
 | Observações | Livre. |
 
@@ -102,6 +102,7 @@ gh pr create --base main --title "feat(ai): esqueleto do serviço de IA" --body-
 
 - **Tipos:** `feat`, `fix`, `docs`, `chore`, `refactor`. **Áreas:** `backend`, `frontend`, `ai`, `docs`, `repo`.
 - O título do PR segue `tipo(area): descrição`. A descrição segue `.github/pull_request_template.md`, com `Closes #N` e as evidências dos testes locais.
+- **Continuação:** o merge fecha a Issue, então o que ficar pendente **não** pode ficar só no texto do PR. Antes do PR, crie uma Issue (template Tarefa) para cada próximo passo, citando a Issue original em "Dependências", e preencha a linha `Continuação: #12, #13` do template. Se a entrega está completa: `Continuação: Nenhuma`. Depois do merge, o CI comenta na Issue fechada com o link da continuação.
 - O merge é humano, depois da revisão e com os checks verdes (Squash and Merge). Em seguida: `git switch main && git pull && git fetch --prune && git branch -D <branch>`.
 
 ## 7. Módulos e integração
@@ -119,7 +120,7 @@ Fluxo: Frontend → Backend → IA, por HTTP/JSON. O Frontend nunca chama a IA d
 - Os testes de cada módulo, com os comandos do README do módulo. Cole a saída no PR.
 - **Endpoints: teste pelo Swagger** (`/docs` do backend e da IA → *Try it out*) sempre que possível, em vez de `curl`. Funciona em qualquer sistema e mostra o formato esperado.
 - O lint de Markdown, o mesmo do CI (precisa de Node.js): `npx markdownlint-cli2@0.23.2 "**/*.md"`.
-- O CI (GitHub Actions) confere ainda o título do PR, a branch, o `Closes #N`, a autoria sem IA, os links dos `.md` e a sintaxe dos workflows. Se um check falhar, o log dele diz o que corrigir.
+- O CI (GitHub Actions) confere ainda o título do PR, a branch, o `Closes #N`, a linha `Continuação:` (Issues abertas ou `Nenhuma`), a autoria sem IA, os links dos `.md` e a sintaxe dos workflows. Se um check falhar, o log dele diz o que corrigir.
 
 ## 9. Se alterar X, atualize Y no mesmo PR
 

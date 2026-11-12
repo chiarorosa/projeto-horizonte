@@ -111,6 +111,7 @@ Registre cada decisão relevante (stack, banco, provedor de LLM, autenticação 
 | 008 | 2026-11-06 | Frontend: React, TypeScript, Vite, React Router, React Hook Form, Zod, Zustand, Fetch API (TanStack Query opcional), Vitest, React Testing Library e Playwright; deploy na Vercel. | Stack definida pela coordenação ([`frontend/README.md`](frontend/README.md)). | Aceita |
 | 009 | 2026-11-06 | IA: Python, FastAPI, Pydantic, Uvicorn, LlamaIndex, OpenRouter (LLM e, opcionalmente, embeddings), Sentence Transformers e pgvector no PostgreSQL (Neon). | Stack definida pela coordenação ([`ai/README.md`](ai/README.md)). | Aceita |
 | 010 | 2026-11-06 | Frontend: MVP só para testar backend e IA, testes reduzidos a um teste de fumaça (Playwright adiado) e chamadas por `/api` com proxy (Vite em desenvolvimento, *rewrite* na Vercel). | Começo mais simples para a equipe de frontend; o proxy evita CORS e endereços no código. | Aceita |
+| 011 | 2026-11-11 | Todo PR declara a continuação: `Continuação: Nenhuma` ou as Issues abertas com os próximos passos, conferidas pelo CI; depois do merge, um workflow comenta o link na Issue fechada. As Issues são criadas pelo aluno, não pelo CI. | Próximos passos escritos só no PR sumiam do Project quando o merge fechava a Issue (ex.: #40 e #52). | Aceita |
 
 ## 4. Variáveis de ambiente
 
@@ -215,6 +216,7 @@ No GitHub, clique em **Compare & pull request** (ou **Pull requests → New pull
 - **Base:** `main`; **Compare:** sua branch.
 - **Título:** no formato de commit (ex.: `feat(backend): login de usuários`).
 - **Descrição:** o template do PR, com o que foi feito, como testar, os resultados dos testes e `Closes #12` (troque pelo número certo).
+- **Continuação:** se algo ficou para depois, crie antes uma Issue para cada próximo passo (template Tarefa, citando a Issue original em "Dependências") e escreva `Continuação: #13, #14`. Se a entrega está completa, `Continuação: Nenhuma`. Não deixe os próximos passos só no texto do PR: o merge fecha a Issue e eles somem do Project.
 - **Revisor:** outro membro autorizado ou o responsável técnico.
 
 Mude o status no Project para *In review*. **PR aberto não é tarefa finalizada:** ela termina após revisão e merge (Squash and Merge).
@@ -231,11 +233,11 @@ git branch -D feat/backend-12-login   # só depois de confirmar que o PR foi int
 
 ## 6. CI e problemas comuns
 
-Cada PR passa por dois workflows do GitHub Actions, e o merge exige todos os checks verdes:
+Cada PR passa por dois workflows do GitHub Actions, e o merge exige todos os checks verdes. Depois do merge, o workflow **Continuação** comenta em cada Issue fechada com o link das Issues de continuação.
 
 | Workflow | Check | O que confere |
 |---|---|---|
-| Regras do PR | Regras do CONTRIBUTING | Título `tipo(area): descrição`, branch `tipo/area-numero-descricao`, `Closes #N` na descrição e commits do aluno, sem coautoria nem rodapé de IA. |
+| Regras do PR | Regras do CONTRIBUTING | Título `tipo(area): descrição`, branch `tipo/area-numero-descricao`, `Closes #N` na descrição, `Continuação:` com Issues abertas ou `Nenhuma` e commits do aluno, sem coautoria nem rodapé de IA. |
 | Documentação | Markdown (markdownlint) | Estilo dos `.md`. Rode antes do push: `npx markdownlint-cli2@0.23.2 "**/*.md"`. |
 | Documentação | Links (lychee) | Links e âncoras dos `.md`. |
 | Documentação | Workflows (actionlint) | Sintaxe dos workflows. |
@@ -245,6 +247,7 @@ Cada PR passa por dois workflows do GitHub Actions, e o merge exige todos os che
 | `Permission denied (publickey)` no push/pull | Configure uma chave SSH e adicione-a à sua conta ([documentação do GitHub](https://docs.github.com/pt/authentication/connecting-to-github-with-ssh)). |
 | Push para `main` rejeitado | Esperado: crie uma branch `tipo/area-numero-descricao` e abra um PR. |
 | Check **Regras do CONTRIBUTING** falhou | Leia o log do check. Título e `Closes #N` se corrigem editando o PR. Para a branch, renomeie (`git branch -m <novo-nome>`), publique (`git push -u origin <novo-nome>`) e abra um novo PR. Para tirar um trailer `Co-authored-by` de IA, reescreva a mensagem dos commits (`git commit --amend` ou `git rebase -i main` com `reword`) e faça `git push --force-with-lease`. |
+| Passo **Continuação** falhou | Edite a descrição do PR (o check roda de novo): `Continuação: Nenhuma`, ou crie as Issues do que ficou pendente e liste-as em `Continuação: #13, #14`. Cada uma precisa existir, estar aberta e não ser a Issue que o PR fecha. |
 | Check **Markdown** ou **Links** falhou | Corrija o que o log aponta e faça um novo push. Um link externo fora do ar pode ser temporário: rode o check de novo antes de alterar o texto. |
 | Arquivos alterados só por fim de linha | O `.gitattributes` normaliza para LF; rode `git add --renormalize .` em uma branch própria. |
 | `.env` aparece no `git status` | Não deve ocorrer (está no `.gitignore`). Se já foi versionado, remova com `git rm --cached .env` e avise o responsável técnico para trocar as credenciais. |
