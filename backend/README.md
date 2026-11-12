@@ -43,7 +43,7 @@ npm run dev          # http://localhost:8000/health e http://localhost:8000/docs
 npm test             # testes (não precisam do banco)
 npm run typecheck    # checagem de tipos
 npm run db:migrate   # SÓ o responsável pelo banco, na dev-banco: cria e aplica migrações
-npx prisma migrate deploy   # na production, depois do merge: só aplica
+# A production recebe as migrações pelo CI, depois do merge (workflow Migrações, README §4).
 npm run build && npm start   # versão compilada, como no deploy
 ```
 
