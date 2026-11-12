@@ -27,7 +27,8 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
           CORPO: ${{ github.event.pull_request.body }}
         run: |
-          corpo=$(tr -d '\r' <<< "$CORPO" | perl -0pe 's/<!--.*?-->//gs')
+          # Mesma leitura do passo Continuação do workflow Regras do PR.
+          corpo=$(tr -d '\r' <<< "$CORPO" | perl -0pe 's/<!--.*?-->//gs; s/^```.*?^```//gms')
           linha=$(grep -iE '^[[:space:]]*continua(ção|cao)[[:space:]]*:' <<< "$corpo" | head -n 1 || true)
           continuacao=$(grep -oE '#[0-9]+' <<< "$linha" | sort -u -t '#' -k 2n | paste -sd ' ' || true)
           fechadas=$(grep -oiE '(close[sd]?|fix(e[sd])?|resolve[sd]?) #[0-9]+' <<< "$corpo" | grep -oE '[0-9]+' | sort -un || true)

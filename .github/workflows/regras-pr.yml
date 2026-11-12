@@ -76,9 +76,9 @@ jobs:
           REPO: ${{ github.repository }}
           CORPO: ${{ github.event.pull_request.body }}
         run: |
-          # O exemplo dentro dos comentários HTML do template não conta, e o
-          # GitHub envia a descrição com fim de linha CRLF.
-          corpo=$(tr -d '\r' <<< "$CORPO" | perl -0pe 's/<!--.*?-->//gs')
+          # Os comentários HTML do template e os blocos de código (saídas de
+          # teste coladas) não contam, e o GitHub envia a descrição com CRLF.
+          corpo=$(tr -d '\r' <<< "$CORPO" | perl -0pe 's/<!--.*?-->//gs; s/^```.*?^```//gms')
           linha=$(grep -iE '^[[:space:]]*continua(ção|cao)[[:space:]]*:' <<< "$corpo" | head -n 1 || true)
           valor=$(sed -E 's/^[^:]*:[[:space:]]*//; s/[[:space:]]+$//' <<< "$linha")
           fechadas=$(grep -oiE '(close[sd]?|fix(e[sd])?|resolve[sd]?) #[0-9]+' <<< "$corpo" | grep -oE '[0-9]+' || true)
