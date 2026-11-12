@@ -1,6 +1,6 @@
 # Projeto Horizonte — Modelo de Dados Relacional
 
-**Versão:** 1.3 — 09/11/2026  
+**Versão:** 1.4 — 12/11/2026  
 **Banco:** PostgreSQL (Neon)  
 **ORM:** Prisma  
 **Referência:** Issue #40
@@ -264,7 +264,7 @@ CHECK (jsonb_typeof("fontes") = 'array')
 4. Após revisar o SQL, aplicar a migração com `npm run db:migrate`, somente pelo responsável pelo banco e na branch Neon `dev-banco` durante o desenvolvimento. Não criar tabelas manualmente no SQL Editor.
 5. Verificar no PostgreSQL as PKs, FKs, índices, tipos, defaults, nulabilidade e ações `ON DELETE`.
 6. Implementar e testar as regras de negócio no backend.
-7. Versionar `backend/prisma/migrations/`, atualizar `backend/README.md` com o ER e abrir o Pull Request.
-8. Após integração e autorização de deploy, aplicar em `production` com `npx prisma migrate deploy`.
+7. Versionar `backend/prisma/migrations/`, atualizar o diagrama ER (§2) e o dicionário de dados (§3) deste documento, que é a única fonte do modelo, e abrir o Pull Request.
+8. Depois do merge, a migração chega na `production` pelo workflow **Migrações (production)** do GitHub Actions, com aprovação da coordenação (README §4). Ninguém roda `npx prisma migrate deploy` na `production` da própria máquina.
 
 **Observações de implementação:** os critérios de conclusão de `LEITURA`, `QUIZ` e `REFLEXAO`, a estrutura mínima de uma trilha publicável e as transições de revisão devem ser definidos nos fluxos de aplicação. As restrições de status e elegibilidade não são garantidas apenas pelas FKs.
