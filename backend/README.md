@@ -28,8 +28,93 @@ backend/
 │   └── openapi.ts      # Documentação servida em /docs
 ├── test/               # Testes (Vitest + Supertest), um arquivo por assunto
 ├── prisma/
-│   └── schema.prisma   # Modelos do banco
+│   ├── schema.prisma   # Modelos do banco
+│   └── migrations/     # Migrações versionadas do Prisma
 └── prisma.config.ts    # Conexão do Prisma (lê o .env da raiz)
+```
+
+## Modelo de dados
+
+O modelo relacional está em [`prisma/schema.prisma`](prisma/schema.prisma) e a primeira migração em [`prisma/migrations/`](prisma/migrations). O dicionário de dados, as regras de negócio e as restrições estão em [`docs/modelo-dados-horizonte.md`](../docs/modelo-dados-horizonte.md).
+
+```mermaid
+erDiagram
+    Usuario ||--o{ Documento : cria
+    Usuario ||--o{ Trilha : cria
+    Usuario |o--o{ Trilha : valida
+    Usuario ||--o{ Inscricao : possui
+    Trilha ||--o{ Inscricao : recebe
+    Trilha ||--o{ Milestone : contem
+    Milestone ||--o{ Atividade : contem
+    Usuario ||--o{ AtividadeConcluida : conclui
+    Atividade ||--o{ AtividadeConcluida : registra
+    Usuario ||--o{ Tentativa : realiza
+    Atividade ||--o{ Tentativa : recebe
+
+    Usuario {
+        uuid id PK
+        string nome
+        string email UK
+        string senhaHash
+        Perfil perfil
+        boolean ativo
+        timestamptz criadoEm
+    }
+    Documento {
+        string id PK
+        string titulo
+        string descricao
+        OrigemDocumento origem
+        StatusDocumento status
+        boolean ativo
+        uuid criadoPorId FK
+        timestamptz criadoEm
+    }
+    Trilha {
+        uuid id PK
+        string titulo
+        string objetivo
+        StatusTrilha status
+        uuid criadoPorId FK
+        uuid validadaPorId FK
+        timestamptz validadaEm
+    }
+    Milestone {
+        uuid id PK
+        uuid trilhaId FK
+        string titulo
+        int ordem
+    }
+    Atividade {
+        uuid id PK
+        uuid milestoneId FK
+        TipoAtividade tipo
+        string descricao
+        int ordem
+        int xp
+        jsonb fontes
+    }
+    Inscricao {
+        uuid usuarioId PK,FK
+        uuid trilhaId PK,FK
+        timestamptz iniciadaEm
+        timestamptz concluidaEm
+        timestamptz abandonadaEm
+    }
+    AtividadeConcluida {
+        uuid usuarioId PK,FK
+        uuid atividadeId PK,FK
+        timestamptz concluidaEm
+        int xpGanho
+    }
+    Tentativa {
+        uuid id PK
+        uuid usuarioId FK
+        uuid atividadeId FK
+        timestamptz realizadaEm
+        decimal nota
+        jsonb respostas
+    }
 ```
 
 ## Execução e testes

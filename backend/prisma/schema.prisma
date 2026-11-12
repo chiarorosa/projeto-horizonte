@@ -10,3 +10,136 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum Perfil {
+  COLABORADOR
+  GESTOR
+  ADMIN
+}
+
+enum OrigemDocumento {
+  AUTORIZADO
+  SINTETICO
+  ANONIMIZADO
+}
+
+enum StatusDocumento {
+  PENDENTE
+  INDEXADO
+  ERRO
+}
+
+enum StatusTrilha {
+  RASCUNHO
+  EM_REVISAO
+  PUBLICADA
+  ARQUIVADA
+}
+
+enum TipoAtividade {
+  LEITURA
+  QUIZ
+  REFLEXAO
+}
+
+model Usuario {
+  id                   String               @id @default(uuid()) @db.Uuid
+  nome                 String               @db.VarChar(150)
+  email                String               @unique @db.VarChar(254)
+  senhaHash            String               @db.Text
+  perfil               Perfil
+  ativo                Boolean              @default(true)
+  criadoEm             DateTime             @default(now()) @db.Timestamptz()
+  documentos           Documento[]
+  trilhasCriadas       Trilha[]             @relation("TrilhaCriadaPor")
+  trilhasValidadas     Trilha[]             @relation("TrilhaValidadaPor")
+  inscricoes           Inscricao[]
+  atividadesConcluidas AtividadeConcluida[]
+  tentativas           Tentativa[]
+}
+
+model Documento {
+  id          String          @id
+  titulo      String          @db.VarChar(255)
+  descricao   String?         @db.Text
+  origem      OrigemDocumento
+  status      StatusDocumento
+  ativo       Boolean         @default(true)
+  criadoPorId String          @db.Uuid
+  criadoPor   Usuario         @relation(fields: [criadoPorId], references: [id], onDelete: Restrict)
+  criadoEm    DateTime        @default(now()) @db.Timestamptz()
+}
+
+model Trilha {
+  id            String       @id @default(uuid()) @db.Uuid
+  titulo        String       @db.VarChar(255)
+  objetivo      String       @db.Text
+  status        StatusTrilha @default(RASCUNHO)
+  criadoPorId   String       @db.Uuid
+  criadoPor     Usuario      @relation("TrilhaCriadaPor", fields: [criadoPorId], references: [id], onDelete: Restrict)
+  validadaPorId String?      @db.Uuid
+  validadaPor   Usuario?     @relation("TrilhaValidadaPor", fields: [validadaPorId], references: [id], onDelete: Restrict)
+  validadaEm    DateTime?    @db.Timestamptz()
+  milestones    Milestone[]
+  inscricoes    Inscricao[]
+}
+
+model Milestone {
+  id         String      @id @default(uuid()) @db.Uuid
+  trilhaId   String      @db.Uuid
+  trilha     Trilha      @relation(fields: [trilhaId], references: [id], onDelete: Cascade)
+  titulo     String      @db.VarChar(255)
+  ordem      Int
+  atividades Atividade[]
+
+  @@unique([trilhaId, ordem])
+}
+
+model Atividade {
+  id                   String               @id @default(uuid()) @db.Uuid
+  milestoneId          String               @db.Uuid
+  milestone            Milestone            @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
+  tipo                 TipoAtividade
+  descricao            String               @db.Text
+  ordem                Int
+  xp                   Int
+  fontes               Json                 @default("[]") @db.JsonB
+  atividadesConcluidas AtividadeConcluida[]
+  tentativas           Tentativa[]
+
+  @@unique([milestoneId, ordem])
+}
+
+model Inscricao {
+  usuarioId    String    @db.Uuid
+  usuario      Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Restrict)
+  trilhaId     String    @db.Uuid
+  trilha       Trilha    @relation(fields: [trilhaId], references: [id], onDelete: Restrict)
+  iniciadaEm   DateTime  @default(now()) @db.Timestamptz()
+  concluidaEm  DateTime? @db.Timestamptz()
+  abandonadaEm DateTime? @db.Timestamptz()
+
+  @@id([usuarioId, trilhaId])
+}
+
+model AtividadeConcluida {
+  usuarioId   String    @db.Uuid
+  usuario     Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Restrict)
+  atividadeId String    @db.Uuid
+  atividade   Atividade @relation(fields: [atividadeId], references: [id], onDelete: Restrict)
+  concluidaEm DateTime  @default(now()) @db.Timestamptz()
+  xpGanho     Int
+
+  @@id([usuarioId, atividadeId])
+}
+
+model Tentativa {
+  id          String    @id @default(uuid()) @db.Uuid
+  usuarioId   String    @db.Uuid
+  usuario     Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Restrict)
+  atividadeId String    @db.Uuid
+  atividade   Atividade @relation(fields: [atividadeId], references: [id], onDelete: Restrict)
+  realizadaEm DateTime  @default(now()) @db.Timestamptz()
+  nota        Decimal?  @db.Decimal(4, 2)
+  respostas   Json?     @db.JsonB
+}
