@@ -37,7 +37,7 @@ jobs:
             exit 0
           fi
 
-          lista=$(sed 's/ /, /g' <<< "$continuacao")
+          lista=${continuacao// /, }
           for n in $fechadas; do
             gh issue comment "$n" --repo "$REPO" \
               --body "Fechada pelo #$PR. **Continua em:** $lista."
