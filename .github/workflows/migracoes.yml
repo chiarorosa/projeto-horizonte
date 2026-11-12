@@ -1,0 +1,54 @@
+# Aplica as migrações do Prisma na branch production do Neon depois do merge
+# (README §4). O job usa o Environment "production" do GitHub, que guarda o
+# secret DATABASE_URL e exige a aprovação da coordenação antes de rodar.
+# `migrate deploy` só aplica migrações pendentes, em ordem; nunca reseta o banco.
+name: Migrações (production)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "backend/prisma/migrations/**"
+  # Para reaplicar ou conferir o estado da production sem um novo merge.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Um deploy por vez; um novo merge espera o anterior terminar.
+concurrency:
+  group: migracoes-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: prisma migrate deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - name: Instalar dependências
+        run: npm ci
+      - name: Conferir o secret
+        run: |
+          if [[ -z "$DATABASE_URL" ]]; then
+            echo "::error title=DATABASE_URL::O Environment 'production' não tem o secret DATABASE_URL (README §4, configuração da coordenação)."
+            exit 1
+          fi
+      - name: Aplicar migrações
+        run: npx prisma migrate deploy
+      - name: Estado da production
+        run: npx prisma migrate status
