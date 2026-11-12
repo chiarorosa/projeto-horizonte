@@ -112,6 +112,7 @@ Registre cada decisão relevante (stack, banco, provedor de LLM, autenticação 
 | 009 | 2026-11-06 | IA: Python, FastAPI, Pydantic, Uvicorn, LlamaIndex, OpenRouter (LLM e, opcionalmente, embeddings), Sentence Transformers e pgvector no PostgreSQL (Neon). | Stack definida pela coordenação ([`ai/README.md`](ai/README.md)). | Aceita |
 | 010 | 2026-11-06 | Frontend: MVP só para testar backend e IA, testes reduzidos a um teste de fumaça (Playwright adiado) e chamadas por `/api` com proxy (Vite em desenvolvimento, *rewrite* na Vercel). | Começo mais simples para a equipe de frontend; o proxy evita CORS e endereços no código. | Aceita |
 | 011 | 2026-11-11 | Todo PR declara a continuação: `Continuação: Nenhuma` ou as Issues abertas com os próximos passos, conferidas pelo CI; depois do merge, um workflow comenta o link na Issue fechada. As Issues são criadas pelo aluno, não pelo CI. | Próximos passos escritos só no PR sumiam do Project quando o merge fechava a Issue (ex.: #40 e #52). | Aceita |
+| 012 | 2026-11-11 | As migrações chegam à `production` do Neon pelo GitHub Actions depois do merge (`prisma migrate deploy`), em um Environment `production` com o `DATABASE_URL` como secret e aprovação obrigatória da coordenação. Seed e indexação seguem manuais. | Ninguém precisa da credencial da `production` na própria máquina, o passo não é esquecido, e a aprovação é uma segunda barreira contra migrações destrutivas. | Aceita |
 
 ## 4. Variáveis de ambiente
 
@@ -141,7 +142,7 @@ Guarde os valores só no `.env` da **raiz** do repositório (`projeto-horizonte/
 
 | Branch do Neon | Quem usa | Regra |
 |---|---|---|
-| `production` | **Ninguém desenvolve nela** | Reservada para o que já está pronto: só recebe migrações (`npx prisma migrate deploy`), seed e indexação **depois do merge do PR**. É a branch padrão do Neon. |
+| `production` | **Ninguém desenvolve nela** | Reservada para o que já está pronto: recebe as migrações pelo CI (workflow **Migrações**, com aprovação) e seed e indexação **depois do merge do PR**. É a branch padrão do Neon. |
 | `dev-banco` | Todos (backend e IA) | Desenvolvimento do dia a dia. É uma cópia da `production`. **Só o responsável pelo banco roda `npm run db:migrate`**, e avisa a equipe antes de aceitar um *reset* (os dados de teste de todos iriam junto). |
 
 Os dados da `dev-banco` são fictícios e se recriam com o seed e o `python -m app.indexar`. Para deixá-la igual à `production` de novo, use **Reset from parent** na página da branch no Neon.
@@ -154,13 +155,14 @@ Para o aluno:
 
 No banco, cada módulo tem o seu schema: o **`public`** é do Prisma (backend) e o **`rag`** é dos vetores da IA (criado na primeira indexação, com a extensão pgvector). Não crie tabelas à mão em nenhum dos dois.
 
-**Novas migrações:** o responsável cria a migração na `dev-banco` e a envia no PR (`backend/prisma/migrations/`). Depois do merge do PR, o responsável aplica na `production` com `cd backend && npx prisma migrate deploy` (que só aplica migrações e nunca apaga dados), usando temporariamente o `DATABASE_URL` da `production`.
+**Novas migrações:** o responsável cria a migração na `dev-banco` e a envia no PR (`backend/prisma/migrations/`). Depois do merge, o workflow **Migrações (production)** roda sozinho quando o PR altera `backend/prisma/migrations/`: ele espera a aprovação da coordenação na aba **Actions** e então executa `npx prisma migrate deploy` na `production` (só aplica migrações pendentes e nunca apaga dados) e `npx prisma migrate status`, cuja saída fica no log. Ninguém precisa do `DATABASE_URL` da `production` na própria máquina. Se o workflow falhar, a correção é uma nova migração em um novo PR; nunca altere à mão uma migração já aplicada.
 
 Para a coordenação (uma vez):
 
 1. Na organização do Neon, em **People → Invite member**, convide cada aluno pelo e-mail com o papel **Collaborator** (o plano gratuito tem membros ilimitados).
 2. No projeto, em **Settings → Project permissions**, dê **Editor** a cada aluno. Não use **Settings → Sharing**, que o Neon está descontinuando.
 3. Em **Branches**, crie a `dev-banco` com *parent* `production` (o plano gratuito permite 10 branches por projeto).
+4. No GitHub, em **Settings → Environments**, crie o Environment **`production`**: em *Deployment protection rules*, marque **Required reviewers** com quem aprova as migrações; em *Deployment branches and tags*, limite a **`main`**; em *Environment secrets*, adicione `DATABASE_URL` com a conexão **direta** da `production` (sem `-pooler`). É ele que o workflow **Migrações (production)** usa.
 
 **`OPENROUTER_API_KEY` e `OPENROUTER_MODEL` (OpenRouter):**
 
@@ -233,7 +235,7 @@ git branch -D feat/backend-12-login   # só depois de confirmar que o PR foi int
 
 ## 6. CI e problemas comuns
 
-Cada PR passa por dois workflows do GitHub Actions, e o merge exige todos os checks verdes. Depois do merge, o workflow **Continuação** comenta em cada Issue fechada com o link das Issues de continuação.
+Cada PR passa por dois workflows do GitHub Actions, e o merge exige todos os checks verdes. Depois do merge, o workflow **Continuação** comenta em cada Issue fechada com o link das Issues de continuação, e o workflow **Migrações (production)**, quando o merge trouxe migrações, aguarda aprovação e as aplica na `production` (README §4).
 
 | Workflow | Check | O que confere |
 |---|---|---|

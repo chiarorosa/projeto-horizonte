@@ -75,6 +75,7 @@ Regras:
   - **Regras do PR:** título `tipo(area): descrição`, branch `tipo/area-numero-descricao`, `Closes #N` na descrição, `Continuação:` com Issues abertas ou `Nenhuma` e autoria do aluno (§7). Se falhar, o log do check diz o que corrigir.
   - **Documentação:** lint de Markdown, links quebrados, validade dos workflows.
 - Depois do merge, o workflow **Continuação** comenta em cada Issue fechada pelo PR com o link das Issues de continuação.
+- Se o merge trouxe migrações (`backend/prisma/migrations/`), o workflow **Migrações (production)** aguarda a aprovação da coordenação e as aplica na `production` do Neon (README §4).
 - Os testes de cada módulo ainda **não** rodam no CI: quem abre o PR executa os testes localmente e apresenta as evidências. Para rodar o lint de Markdown antes do push, veja o [`AGENTS.md`](AGENTS.md) §8.
 - **PR aberto não é tarefa finalizada.** Ela termina após revisão e merge.
 
