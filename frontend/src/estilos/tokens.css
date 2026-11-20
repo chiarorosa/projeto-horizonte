@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+    --color-nav:#12273F;
+    --color-brand:#2E5BD5;
+    --color-brandSoft:#EAF0FF;
+    --color-assist:#06777E;
+    --color-assistSoft:#E9F6F5;
+    --color-canvas: #F4F6FA;
+    --color-panel: #FFFFFF;
+    --color-text: #21334B;
+    --color-muted: #5F7086;
+    --color-positive: #17765B;
+
+    --font-sans: "Inter", system-ui, sans-serif;
+}
+
+@layer base {
+  body { @apply bg-canvas text-text font-sans; }
+}
