@@ -14,6 +14,10 @@
     --color-line: #E0E6EF;
     --color-input: #F8FAFC;
     --color-inverse: #C4D3E5;
+    --color-brandHover: #244CB7;
+    --color-error: #B33939;
+
+    --shadow-painel: 0 4px 18px 0 #0F1F330E;
 
     --font-sans: "Inter", system-ui, sans-serif;
 
@@ -40,6 +44,10 @@
     --text-body: 1rem;
     --text-body--line-height: 1.5rem;
     --text-body--font-weight: 400;
+
+    --text-button: 0.875rem;
+    --text-button--line-height: 1.25rem;
+    --text-button--font-weight: 600;
 
     --text-label: 0.875rem;
     --text-label--line-height: 1.25rem;
